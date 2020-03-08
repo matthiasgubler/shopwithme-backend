@@ -19,7 +19,6 @@ on_finish:
 skip_tags: true
 deploy_script:
   - sh: export DOCKER_HOST=${DEPLOYMENT_HOST}
-  - sh: export DOCKER_TLS_VERIFY=false
   - sh: docker-compose build
   - sh: docker-compose up --no-deps -d app
 cache:
