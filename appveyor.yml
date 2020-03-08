@@ -1,6 +1,8 @@
 image: ubuntu-18.04-amd64
 install:
   - sudo java_select $JDK_VERSION
+  - sudo apt-get update && apt install curl
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
 environment:
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
 stack: jdk 8
@@ -16,8 +18,7 @@ on_finish:
 skip_tags: true
 deploy_script:
   - sh: docker context create remote --docker "host=ssh://psituser@swm.damutten.ch"
-  - sh: docker context use remote
-  - sh: docker-compose up --build
+  - sh: docker-compose --context remote up --build
 cache:
   - "$HOME/.cache"
   - "$HOME/.m2/repository"
