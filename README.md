@@ -10,7 +10,7 @@ For building and running the application you need:
 
 ## Running the application locally
 
-First of all ensure you have a local mongodb instance running. That can be done with docker in an unpersistent way: 
+First of all ensure you have a local mongodb instance running. That can be done with docker in an ephemeral way: 
 ```shell
 docker run --name mongodb --expose 27017 mongo:4.2.3
 ```
