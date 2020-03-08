@@ -1,0 +1,19 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo:4.2.3
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+  app:
+    image: backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - LOGGING_LEVEL_ROOT=DEBUG
+      - SPRING_MAIN_LOG-STARTUP-INFO=false
