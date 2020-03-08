@@ -14,6 +14,10 @@ on_finish:
       find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
 # We do not want to build git tags.
 skip_tags: true
+deploy_script:
+  - sh: docker context create remote ‐‐docker “host=ssh://psituser@swm.damutten.ch”
+  - sh: docker context use remote
+  - sh: docker-compose up --build
 cache:
   - "$HOME/.cache"
   - "$HOME/.m2/repository"
