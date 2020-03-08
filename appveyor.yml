@@ -2,7 +2,7 @@ image: ubuntu-18.04-amd64
 install:
   - sudo java_select $JDK_VERSION
 environment:
-  - JDK_VERSION: adoptopenjdk-8-hotspot-amd64
+  JDK_VERSION: adoptopenjdk-8-hotspot-amd64
 stack: jdk 8
 build_script:
   - ./mvnw clean install package -B
