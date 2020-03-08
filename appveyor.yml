@@ -2,7 +2,6 @@ image: ubuntu-18.04-amd64
 environment:
   DEPLOYMENT_HOST: ssh://psituser@swm.damutten.ch
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
-  APPVEYOR_SSH_KEY: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDmvWJaol+5upE3YghLPn3bPIAOBmYTw5t8P+w/2QJnlLEaCqOZIC9+4w7wf7ec6j9c7Iae+3HvP2qsLERXnkkqTLr0wA0ua91A4hzuYk82Uxtnqgc5i9PswR0zDk1X40DCFZK/BT/sbCGwAD7jn9D1yrzgmC6UgomUninR4URUXJstELhL0LLKW1j/TYHVcQYooKCehSkFkf4i72RPuEMwNEpl1/QDmaWFXYLkMBVv/ZtF5DV7vZGL46oxOsEcWcgk7H5im5XSOb0byZes0ObSOmy4tu3gx8vhfijlrItkbWR2n4PrVBIXhOwT5A1RyGpJChKEeugVhcnruiPUVGkl OpenShift-Key
 install:
   - sudo java_select $JDK_VERSION
   - sudo apt-get update && sudo apt install curl
@@ -19,11 +18,10 @@ on_finish:
 # We do not want to build git tags.
 skip_tags: true
 deploy_script:
-  - sh: docker context create remote --docker "host=$DEPLOYMENT_HOST"
-  - sh: docker context use remote
-  - sh: export APPVEYOR_SSH_BLOCK=true
-  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
-  - sh: docker-compose -H "$DEPLOYMENT_HOST" up --build
+  - sh: export DOCKER_HOST=${$DEPLOYMENT_HOST}
+  - sh: export DOCKER_TLS_VERIFY=false
+  - sh: docker-compose build
+  - sh: docker-compose up --no-deps -d app
 cache:
   - "$HOME/.cache"
   - "$HOME/.m2/repository"
