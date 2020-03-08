@@ -18,6 +18,7 @@ on_finish:
 # We do not want to build git tags.
 skip_tags: true
 deploy_script:
+  - sh: ssh psituser@swm.damutten.ch 'df -H'
   - sh: export DOCKER_HOST=${DEPLOYMENT_HOST}
   - sh: docker-compose build
   - sh: docker-compose up --no-deps -d app
