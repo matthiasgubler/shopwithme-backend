@@ -21,7 +21,6 @@ install:
 
 stack: jdk 8
 build_script:
-  - mvn -N io.takari:maven:wrapper
   - ./mvnw clean install package -B
 artifacts:
   - path: "target/*.jar"
