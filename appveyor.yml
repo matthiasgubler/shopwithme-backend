@@ -1,6 +1,6 @@
 image: ubuntu-18.04-amd64
 environment:
-  DEPLOYMENT_HOST: psituser@swm.damutten.ch
+  DEPLOYMENT_HOST: ssh://psituser@swm.damutten.ch
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
 install:
   - sudo java_select $JDK_VERSION
@@ -18,7 +18,7 @@ on_finish:
 # We do not want to build git tags.
 skip_tags: true
 deploy_script:
-  - sh: docker context create remote --docker "host=ssh://$DEPLOYMENT_HOST"
+  - sh: docker context create remote --docker "host=$DEPLOYMENT_HOST"
   - sh: docker context use remote
   - sh: docker-compose -H "$DEPLOYMENT_HOST" up --build
 cache:
