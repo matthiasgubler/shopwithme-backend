@@ -1,4 +1,7 @@
 image: ubuntu-18.04-amd64
+environment:
+  - MVNW_VERBOSE: true
+
 install:
   - ls -ahl;
   - sh: |
@@ -21,6 +24,7 @@ install:
 
 stack: jdk 8
 build_script:
+  - mvn -N io.takari:maven:wrapper
   - ./mvnw clean install package -B
 artifacts:
   - path: "target/*.jar"
