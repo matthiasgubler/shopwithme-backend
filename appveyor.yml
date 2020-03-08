@@ -1,4 +1,4 @@
-image: ubuntu
+image: ubuntu-18.04-amd64
 install:
   - ls -ahl;
   - sh: |
