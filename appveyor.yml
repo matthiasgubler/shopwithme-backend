@@ -1,7 +1,7 @@
 image: ubuntu-18.04-amd64
 install:
   - sudo java_select $JDK_VERSION
-  - sudo apt-get update && apt install curl
+  - sudo apt-get update && sudo apt install curl
   - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
 environment:
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
