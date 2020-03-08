@@ -7,7 +7,7 @@ stack: jdk 8
 build_script:
   - ./mvnw clean install package -B
 artifacts:
-  - path: "$APPVEYOR_BUILD_FOLDER/target/*.jar"
+  - path: "target/*.jar"
 on_finish:
   # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
   - sh: |
