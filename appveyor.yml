@@ -21,7 +21,7 @@ deploy_script:
   - sh: ssh psituser@swm.damutten.ch 'df -H'
   - sh: export DOCKER_HOST=${DEPLOYMENT_HOST}
   - sh: docker-compose build
-  - sh: docker-compose up --no-deps -d app
+  - sh: docker-compose up -d
 cache:
   - "$HOME/.cache"
   - "$HOME/.m2/repository"
