@@ -18,7 +18,7 @@ on_finish:
 # We do not want to build git tags.
 skip_tags: true
 deploy_script:
-  - sh: export DOCKER_HOST=${$DEPLOYMENT_HOST}
+  - sh: export DOCKER_HOST=${DEPLOYMENT_HOST}
   - sh: export DOCKER_TLS_VERIFY=false
   - sh: docker-compose build
   - sh: docker-compose up --no-deps -d app
@@ -27,4 +27,5 @@ cache:
   - "$HOME/.m2/repository"
   - "$HOME/.m2/wrapper"
   - "$HOME/.sonar/cache"
+  - "/usr/local/bin/docker-compose"
 version: '1.0.{build}'
