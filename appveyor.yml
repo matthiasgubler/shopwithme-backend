@@ -1,7 +1,4 @@
 image: ubuntu-18.04-amd64
-environment:
-  - MVNW_VERBOSE: true
-
 install:
   - ls -ahl;
   - sh: |
