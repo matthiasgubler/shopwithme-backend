@@ -26,5 +26,4 @@ cache:
   - "$HOME/.m2/repository"
   - "$HOME/.m2/wrapper"
   - "$HOME/.sonar/cache"
-  - "/usr/local/bin/docker-compose"
 version: '1.0.{build}'
