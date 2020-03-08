@@ -1,5 +1,5 @@
 version: '1.0.{build}'
 build_script:
-  - cmd: mvn test install
+  - cmd: ./mvnw clean install package
 cache:
-  - C:\Users\appveyor\.m2
+  - .m2
