@@ -1,5 +1,16 @@
-version: '1.0.{build}'
+image: ubuntu-18.04-amd64
+install:
+
 build_script:
-  - cmd: ./mvnw clean install package
+  - ./mvnw clean install package -B
+artifacts:
+  - path: "target/*.jar"
+on_finish:
+  # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
+  - sh: |
+      find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
+# We do not want to build git tags.
+skip_tags: true
 cache:
   - .m2
+version: '1.0.{build}'
