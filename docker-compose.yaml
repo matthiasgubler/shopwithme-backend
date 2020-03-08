@@ -5,8 +5,15 @@ services:
     container_name: "mongodb"
     ports:
       - 27017:27017
+    volumes:
+      - "dbdata:/data/db"
   app:
-    image: backend
+    build:
+      context: .
+      args:
+        - JAR_FILE=target/wall-0.0.1-SNAPSHOT.jar
+    image: backend:latest
+    restart: always
     ports:
       - 8080:8080
     depends_on:
@@ -15,5 +22,5 @@ services:
       - mongodb
     environment:
       - SPRING_DATA_MONGODB_HOST=mongodb
-      - LOGGING_LEVEL_ROOT=DEBUG
-      - SPRING_MAIN_LOG-STARTUP-INFO=false
+volumes:
+  dbdata:
