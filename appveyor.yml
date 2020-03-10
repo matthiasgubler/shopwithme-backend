@@ -4,8 +4,6 @@ environment:
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
 install:
   - sudo java_select $JDK_VERSION
-  - sudo apt-get update && sudo apt install curl
-  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
 stack: jdk 8
 build_script:
   - ./mvnw clean install package -B
@@ -17,10 +15,18 @@ on_finish:
       find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
 # We do not want to build git tags.
 skip_tags: true
+before_deploy:
+  - sudo apt-get update && sudo apt install curl
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
 deploy_script:
-  - sh: ssh psituser@swm.damutten.ch 'df -H'
-  - sh: export DOCKER_HOST=${DEPLOYMENT_HOST}
-  - sh: docker-compose up --build -d
+  - sh: |
+      if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
+          echo "master branch, deploying!"
+          export DOCKER_HOST=${DEPLOYMENT_HOST}
+          docker-compose up --build -d
+      else
+          echo "Not master, skipping deploy!"
+      fi
 cache:
   - "$HOME/.cache"
   - "$HOME/.m2/repository"
