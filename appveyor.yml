@@ -15,6 +15,10 @@ on_finish:
       find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
 # We do not want to build git tags.
 skip_tags: true
+skip_branch_with_pr: true
+pull_requests:
+  do_not_increment_build_number: true
+
 deploy_script:
   - sh: |
       if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
