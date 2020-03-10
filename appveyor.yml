@@ -22,6 +22,7 @@ deploy_script:
   - sh: |
       if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
           echo "master branch, deploying!"
+          cat known_hosts >> ~/.ssh/known_hosts
           export DOCKER_HOST=${DEPLOYMENT_HOST}
           docker-compose up --build -d
       else
