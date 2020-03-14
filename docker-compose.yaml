@@ -9,17 +9,16 @@ services:
   app:
     build:
       context: .
-      args:
-        - JAR_FILE=target/wall-0.0.1-SNAPSHOT.jar
     image: backend:latest
     restart: always
     ports:
       - 8080:8080
     depends_on:
       - mongodb
-    links:
-      - mongodb
     environment:
       - SPRING_DATA_MONGODB_HOST=mongodb
+    tmpfs:
+      - /tmp
+
 volumes:
   dbdata:

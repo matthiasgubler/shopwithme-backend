@@ -107,6 +107,12 @@
                 <version>2.22.2</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.surefire</groupId>
+                <artifactId>surefire-junit-platform</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
@@ -129,6 +135,11 @@
                         <version>8.29</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>8.29</version>
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
