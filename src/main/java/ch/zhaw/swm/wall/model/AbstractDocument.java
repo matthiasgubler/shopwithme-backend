@@ -16,6 +16,10 @@ public class AbstractDocument {
         this.id = id;
     }
 
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
     /**
      * Returns the identifier of the document.
      *

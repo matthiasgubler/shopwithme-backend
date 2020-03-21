@@ -1,8 +1,9 @@
 package ch.zhaw.swm.wall.contoller;
 
 import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
-import ch.zhaw.swm.wall.model.Person;
+import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -10,10 +11,10 @@ import java.util.List;
 
 @RestController
 public class PersonsController {
-
     private final PersonRepository repository;
 
-    PersonsController(PersonRepository repository) {
+    @Autowired
+    public PersonsController(PersonRepository repository) {
         this.repository = repository;
     }
 
@@ -25,13 +26,6 @@ public class PersonsController {
     @GetMapping("/persons")
     List<Person> all() {
         return repository.findAll();
-    }
-
-    @GetMapping("/persons/mock")
-    void mock() {
-        Person person = newPerson(new Person(BigInteger.valueOf(34)));
-        System.out.println(person);
-        delete(person.getId());
     }
 
     @GetMapping("/persons/{id}")

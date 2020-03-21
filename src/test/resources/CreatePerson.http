@@ -9,7 +9,15 @@ POST http://localhost:8080/persons
 Content-Type: application/json
 
 {
-  "id": 69
+  "id": 69,
+  "firstName": "hans",
+  "address": {
+      "city": "Winterthur",
+      "street": "Römerstrasse 15",
+      "zip": "8400",
+      "telephone": "0800800800"
+  },
+  "friends": [ "19", "15", "17" ]
 }
 
 ###
