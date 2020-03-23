@@ -12,7 +12,7 @@ For building and running the application you need:
 
 First of all ensure you have a local mongodb instance running. That can be done with docker in an ephemeral way: 
 ```shell
-docker run --name mongodb --expose 27017 mongo:4.2.3
+docker run --rm --name mongodb --publish "27017:27017" mongo:4.2.3
 ```
 
 There are several ways to run a Spring Boot application on your local machine. One way is to execute the `main` method in the `ch.zhaw.swm.wall.WallApplication` class from your IDE.
