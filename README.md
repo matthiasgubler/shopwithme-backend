@@ -23,5 +23,10 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 mvn spring-boot:run
 ```
 
-### Run and build it locally
-There is also a way to run and build everything locally on docker with an volume attached, so the data is persistent. Just run the script `build_and_run_complete.sh` 
+### Run everything in one command
+There is also a way to run and build everything locally on docker with an volume attached, so the data is persistent.  
+Just run `docker-compose up -d --build` in the project directory.
+
+To stop it again: `docker-compose down`
+
+And if you want to remove all local data: `docker-compose down -v`
