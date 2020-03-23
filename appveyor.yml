@@ -2,23 +2,30 @@ image: ubuntu-18.04-amd64
 environment:
   DEPLOYMENT_HOST: ssh://psituser@swm.damutten.ch
   JDK_VERSION: adoptopenjdk-8-hotspot-amd64
-install:
-  - sudo java_select $JDK_VERSION
-stack: jdk 8
-build_script:
-  - ./mvnw clean install package -B
-artifacts:
-  - path: "target/*.jar"
-on_finish:
-  # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
-  - sh: |
-      find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
+cache:
+  - "$HOME/.cache"
+  - "$HOME/.m2/repository"
+  - "$HOME/.m2/wrapper"
+  - "$HOME/.sonar/cache"
+version: '1.0.{build}'
+
 # We do not want to build git tags.
 skip_tags: true
 skip_branch_with_pr: true
 pull_requests:
   do_not_increment_build_number: true
+  
+install:
+  - sudo java_select $JDK_VERSION
 
+build_script:
+  - ./mvnw verify -B
+  
+on_finish:
+  # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
+  - sh: |
+      find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
+  
 deploy_script:
   - sh: |
       if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
@@ -31,9 +38,3 @@ deploy_script:
       else
           echo "Not master, skipping deploy!"
       fi
-cache:
-  - "$HOME/.cache"
-  - "$HOME/.m2/repository"
-  - "$HOME/.m2/wrapper"
-  - "$HOME/.sonar/cache"
-version: '1.0.{build}'
