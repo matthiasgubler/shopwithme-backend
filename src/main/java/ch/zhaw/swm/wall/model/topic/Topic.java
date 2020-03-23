@@ -3,13 +3,12 @@ package ch.zhaw.swm.wall.model.topic;
 import ch.zhaw.swm.wall.model.AbstractDocument;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import java.math.BigInteger;
 
 public class Topic extends AbstractDocument {
     private String title;
 
     @Indexed
-    private BigInteger personId;
+    private String personId;
 
     public String getTitle() {
         return title;
@@ -19,11 +18,11 @@ public class Topic extends AbstractDocument {
         this.title = title;
     }
 
-    public BigInteger getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(BigInteger personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 }

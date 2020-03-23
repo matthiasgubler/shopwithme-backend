@@ -6,7 +6,6 @@ import ch.zhaw.swm.wall.model.post.PostStructure;
 import ch.zhaw.swm.wall.repository.PostRepository;
 import ch.zhaw.swm.wall.services.post.PostService;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<Image> findImagePostById(BigInteger id) {
+    public Optional<Image> findImagePostById(String id) {
         //TODO richtige Type-Check usw..
         return postRepository.findById(id).map(post -> ((Image) post));
     }

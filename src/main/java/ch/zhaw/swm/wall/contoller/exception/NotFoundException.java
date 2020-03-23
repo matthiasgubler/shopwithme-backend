@@ -1,15 +1,11 @@
 package ch.zhaw.swm.wall.contoller.exception;
 
-import java.math.BigInteger;
+
+import java.text.MessageFormat;
 
 public class NotFoundException extends RuntimeException {
-
-    private BigInteger id;
-
-    private String entityName;
-
-    public NotFoundException(String entityName, BigInteger id) {
-        super(entityName + " id not found : " + id);
+    public NotFoundException(String entityName, String id) {
+        super(MessageFormat.format("{0} id not found : {1}", entityName, id));
     }
 
 }

@@ -1,43 +1,51 @@
 package ch.zhaw.swm.wall.contoller;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
-import ch.zhaw.swm.wall.repository.PersonRepository;
+import ch.zhaw.swm.wall.services.person.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
-public class PersonsController {
-    private final PersonRepository repository;
+public class PersonsController extends BasicController {
+    private final PersonService personService;
 
     @Autowired
-    public PersonsController(PersonRepository repository) {
-        this.repository = repository;
+    public PersonsController(PersonService personService) {
+        this.personService = personService;
     }
 
     @PostMapping("/persons")
-    Person newPerson(@RequestBody Person newPerson) {
-        return repository.save(newPerson);
+    public Person newPerson(@RequestBody Person newPerson) {
+        return personService.createPerson(newPerson);
     }
 
     @GetMapping("/persons")
-    List<Person> all() {
-        return repository.findAll();
+    public List<Person> all() {
+        return personService.findAll();
     }
 
-    @GetMapping("/persons/{id}")
-    Person one(@PathVariable BigInteger id) {
-
-        return repository.findById(id)
-            .orElseThrow(() -> new NotFoundException("person", id));
+    @PutMapping("/persons")
+    public Person updatePerson(@RequestBody Person existingPerson) {
+        return personService.editPerson(existingPerson);
     }
 
     @DeleteMapping("/persons/{id}")
-    void delete(@PathVariable BigInteger id) {
-        Person personToDelete = this.one(id);
-        this.repository.delete(personToDelete);
+    void delete(@PathVariable String id) {
+        this.personService.deletePerson(id);
     }
+
+    @GetMapping("/persons/{id}")
+    public ResponseEntity<Person> one(@PathVariable String id) {
+        return handleSingleResourceResponse(personService.findById(id));
+    }
+
+    @GetMapping("persons/{id}/friends")
+    public List<Person> getFriends(@PathVariable String id) {
+        return personService.findFriends(id);
+    }
+
+
 }

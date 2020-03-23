@@ -1,10 +1,8 @@
 package ch.zhaw.swm.wall.model.post;
 
-import java.math.BigInteger;
-
 public class PostStructure {
     private String link;
-    private BigInteger id;
+    private String id;
     private PostType type;
     private String title;
 
@@ -16,11 +14,11 @@ public class PostStructure {
         this.link = link;
     }
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

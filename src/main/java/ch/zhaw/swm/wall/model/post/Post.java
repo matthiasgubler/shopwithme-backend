@@ -5,15 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import java.math.BigInteger;
 import java.text.MessageFormat;
 
 public class Post extends AbstractDocument {
     @Indexed
-    private BigInteger topicId;
+    private String topicId;
 
     @Indexed
-    private BigInteger personId;
+    private String personId;
 
     private String title;
 
@@ -23,11 +22,11 @@ public class Post extends AbstractDocument {
         this.postType = postType;
     }
 
-    public BigInteger getTopicId() {
+    public String getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(BigInteger topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 
@@ -35,11 +34,11 @@ public class Post extends AbstractDocument {
         return postType;
     }
 
-    public BigInteger getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(BigInteger personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 

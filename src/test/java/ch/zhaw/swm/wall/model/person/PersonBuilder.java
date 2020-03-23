@@ -1,14 +1,13 @@
 package ch.zhaw.swm.wall.model.person;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public final class PersonBuilder {
-    private BigInteger id;
+    private String id;
     private String name;
     private String firstName;
     private Address address;
-    private List<BigInteger> friends;
+    private List<String> friends;
 
     private PersonBuilder() {
     }
@@ -17,7 +16,7 @@ public final class PersonBuilder {
         return new PersonBuilder();
     }
 
-    public PersonBuilder withId(BigInteger id) {
+    public PersonBuilder withId(String id) {
         this.id = id;
         return this;
     }
@@ -37,7 +36,7 @@ public final class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder withFriends(List<BigInteger> friends) {
+    public PersonBuilder withFriends(List<String> friends) {
         this.friends = friends;
         return this;
     }

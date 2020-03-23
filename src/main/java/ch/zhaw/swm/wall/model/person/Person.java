@@ -4,7 +4,6 @@ package ch.zhaw.swm.wall.model.person;
 import ch.zhaw.swm.wall.model.AbstractDocument;
 import org.springframework.data.annotation.PersistenceConstructor;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +11,18 @@ public class Person extends AbstractDocument {
     private String name;
     private String firstName;
     private Address address;
-    private final List<BigInteger> friends;
+    private final List<String> friends;
 
     public Person() {
         friends = new ArrayList<>();
     }
 
     @PersistenceConstructor
-    public Person(List<BigInteger> friends) {
+    public Person(List<String> friends) {
         this.friends = friends;
     }
 
-    public List<BigInteger> getFriends() {
+    public List<String> getFriends() {
         return friends;
     }
 

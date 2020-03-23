@@ -2,21 +2,19 @@ package ch.zhaw.swm.wall.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.math.BigInteger;
-
 public class AbstractDocument {
 
     @Id
-    private BigInteger id;
+    private String id;
 
     public AbstractDocument() {
     }
 
-    public AbstractDocument(BigInteger id) {
+    public AbstractDocument(String id) {
         this.id = id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -25,7 +23,7 @@ public class AbstractDocument {
      *
      * @return the id
      */
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
