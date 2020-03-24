@@ -22,6 +22,14 @@ build_script:
   - ./mvnw verify -B
   
 on_finish:
+  # Run sonarqube analysis
+  - sh: |
+      if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
+          echo "master branch, running sonar scan!"
+          ./mvnw clean verify sonar:sonar
+      else
+          echo "Not master, skipping sonar scanner!"
+      fi
   # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
   - sh: |
       find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
