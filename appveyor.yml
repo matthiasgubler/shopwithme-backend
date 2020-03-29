@@ -36,7 +36,7 @@ deploy_script:
           sudo curl -sSL "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
           cat known_hosts >> ~/.ssh/known_hosts
           export DOCKER_HOST=${DEPLOYMENT_HOST}
-          docker-compose up --build -d
+          docker-compose --project-name backend up -d --build
       else
           echo "Not master, skipping deploy!"
       fi
