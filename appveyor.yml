@@ -8,6 +8,7 @@ cache:
   - "$HOME/.m2/wrapper"
   - "$HOME/.sonar/cache"
 version: '1.0.{build}'
+build: off
 
 # We do not want to build git tags.
 skip_tags: true
@@ -20,16 +21,8 @@ install:
 
 build_script:
   - ./mvnw verify -B
-  
+
 on_finish:
-  # Run sonarqube analysis
-  - sh: |
-      if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
-          echo "master branch, running sonar scan!"
-          ./mvnw clean verify sonar:sonar
-      else
-          echo "Not master, skipping sonar scanner!"
-      fi
   # Search the 'target' folder for all JUnit test reports and upload them to the CI server.
   - sh: |
       find "$APPVEYOR_BUILD_FOLDER/target" -type f -name 'TEST*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.cloudlab.zhaw.ch/api/testresults/junit/$APPVEYOR_JOB_ID"
@@ -38,6 +31,7 @@ deploy_script:
   - sh: |
       if [ "$APPVEYOR_REPO_BRANCH" = "master" ]; then
           echo "master branch, deploying!"
+          ./mvnw clean verify sonar:sonar
           sudo apt-get update && sudo apt install curl
           sudo curl -sSL "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
           cat known_hosts >> ~/.ssh/known_hosts
