@@ -2,16 +2,20 @@ package ch.zhaw.swm.wall.model.person;
 
 
 import ch.zhaw.swm.wall.model.AbstractDocument;
+import ch.zhaw.swm.wall.model.Status;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Person extends AbstractDocument {
+    public static final String ENTITY_NAME = "person";
+
     private String name;
     private String firstName;
     private Address address;
     private final List<String> friends;
+    private Status status = Status.ACTIVE;
 
     public Person() {
         friends = new ArrayList<>();
@@ -48,5 +52,23 @@ public class Person extends AbstractDocument {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

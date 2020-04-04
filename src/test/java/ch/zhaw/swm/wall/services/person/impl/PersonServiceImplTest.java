@@ -1,10 +1,9 @@
-package ch.zhaw.swm.wall.service;
+package ch.zhaw.swm.wall.services.person.impl;
 
 import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.PersonBuilder;
 import ch.zhaw.swm.wall.repository.PersonRepository;
-import ch.zhaw.swm.wall.services.person.impl.PersonServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class PersonServiceTest {
+public class PersonServiceImplTest {
     @Mock
     private PersonRepository personRepository;
 

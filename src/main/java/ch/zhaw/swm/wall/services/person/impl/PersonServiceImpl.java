@@ -1,8 +1,8 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.repository.PersonRepository;
+import ch.zhaw.swm.wall.services.EntityIdHandler;
 import ch.zhaw.swm.wall.services.person.PersonService;
 
 import java.util.List;
@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
+
+    private final EntityIdHandler entityIdHandler = new EntityIdHandler();
 
     public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -27,19 +29,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person editPerson(Person person) {
-        return findById(person.getId()).
-            map(storedPerson -> editPerson(person, storedPerson)).orElseThrow(() ->
-            new NotFoundException("person", person.getId()));
+        return entityIdHandler.handle(Person.ENTITY_NAME, person.getId(), personRepository::findById, storedPerson -> this.editPerson(person, storedPerson));
     }
 
     @Override
     public void deletePerson(String personId) {
-        Optional<Person> personOptional = personRepository.findById(personId);
-        if (personOptional.isPresent()) {
-            personRepository.delete(personOptional.get());
-        } else {
-            throw new NotFoundException("person", personId);
-        }
+        entityIdHandler.consume(Person.ENTITY_NAME, personId, personRepository::findById, personRepository::delete);
     }
 
     @Override
@@ -49,9 +44,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> findFriends(String personId) {
-        return findById(personId).
-            map(this::findFriends).orElseThrow(() ->
-            new NotFoundException("person", personId));
+        return entityIdHandler.handle(Person.ENTITY_NAME, personId, personRepository::findById, this::findFriends);
     }
 
     @Override
