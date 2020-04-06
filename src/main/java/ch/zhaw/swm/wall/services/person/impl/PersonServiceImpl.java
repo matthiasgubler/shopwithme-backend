@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class PersonServiceImpl implements PersonService {
+
     private final PersonRepository personRepository;
 
     private final EntityIdHandler entityIdHandler = new EntityIdHandler();
@@ -42,18 +43,9 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findAll();
     }
 
-    @Override
-    public List<Person> findFriends(String personId) {
-        return entityIdHandler.handle(Person.ENTITY_NAME, personId, personRepository::findById, this::findFriends);
-    }
-
-    @Override
-    public List<Person> findFriends(Person person) {
-        return personRepository.findByIdIn(person.getFriends());
-    }
-
     public Person editPerson(Person editedPerson, Person storedPerson) {
-        //hier könnte man z.B Felder welche wir nur intern führen usw restored werden aus storedPerson..
+        // Hier könnte man z.B intern geführte Felder usw. restored werden aus storedPerson.
         return personRepository.save(editedPerson);
     }
+
 }

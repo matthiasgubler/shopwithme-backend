@@ -35,7 +35,7 @@ class TopicServiceImplTest {
 
     @Test
     void create_matching_person() {
-        when(personService.findById(PERSON_ID)).thenReturn(Optional.of(new Person()));
+        when(personService.findById(PERSON_ID)).thenReturn(Optional.of(new Person("tim", "tim@bluewin.ch")));
 
         Topic topic = new Topic();
         topic.setTitle("MyTopic");

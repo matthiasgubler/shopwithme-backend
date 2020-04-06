@@ -8,19 +8,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class PersonServiceImplTest {
+
     @Mock
     private PersonRepository personRepository;
 
@@ -28,35 +25,6 @@ public class PersonServiceImplTest {
     private PersonServiceImpl personService;
 
     private static final String DEFAULT_ID = "10";
-
-    @Test
-    void friends_not_found() {
-        Person person = PersonBuilder.aPerson().withId(DEFAULT_ID).build();
-
-        Person personA = PersonBuilder.aPerson().build();
-        Person personB = PersonBuilder.aPerson().build();
-        Person personC = PersonBuilder.aPerson().build();
-
-        when(personRepository.findById(DEFAULT_ID)).thenReturn(Optional.empty());
-        when(personRepository.findByIdIn(Mockito.any())).thenReturn(Arrays.asList(personA, personB, personC));
-
-        Assertions.assertThrows(NotFoundException.class, () -> personService.findFriends(person.getId()));
-    }
-
-    @Test
-    void friends() {
-        Person person = PersonBuilder.aPerson().withId(DEFAULT_ID).build();
-
-        Person personA = PersonBuilder.aPerson().build();
-        Person personB = PersonBuilder.aPerson().build();
-        Person personC = PersonBuilder.aPerson().build();
-
-        when(personRepository.findById(DEFAULT_ID)).thenReturn(Optional.of(person));
-        when(personRepository.findByIdIn(Mockito.any())).thenReturn(Arrays.asList(personA, personB, personC));
-
-        List<Person> friends = personService.findFriends(DEFAULT_ID);
-        assertEquals(3, friends.size());
-    }
 
     @Test
     void create() {
@@ -97,4 +65,5 @@ public class PersonServiceImplTest {
         when(personRepository.findById(DEFAULT_ID)).thenReturn(Optional.empty());
         Assertions.assertThrows(NotFoundException.class, () -> personService.deletePerson(DEFAULT_ID));
     }
+
 }

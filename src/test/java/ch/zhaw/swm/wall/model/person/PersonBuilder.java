@@ -1,13 +1,9 @@
 package ch.zhaw.swm.wall.model.person;
 
-import java.util.List;
-
 public final class PersonBuilder {
     private String id;
-    private String name;
-    private String firstName;
-    private Address address;
-    private List<String> friends;
+    private String username;
+    private String email;
 
     private PersonBuilder() {
     }
@@ -21,32 +17,21 @@ public final class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder withName(String name) {
-        this.name = name;
+    public PersonBuilder withUsername(String username) {
+        this.username = username;
         return this;
     }
 
-    public PersonBuilder withFirstName(String firstName) {
-        this.firstName = firstName;
+    public PersonBuilder withEmail(String email) {
+        this.email = email;
         return this;
     }
 
-    public PersonBuilder withAddress(Address address) {
-        this.address = address;
-        return this;
-    }
-
-    public PersonBuilder withFriends(List<String> friends) {
-        this.friends = friends;
-        return this;
-    }
 
     public Person build() {
-        Person person = new Person(friends);
+        Person person = new Person(username, email);
         person.setId(id);
-        person.setName(name);
-        person.setFirstName(firstName);
-        person.setAddress(address);
         return person;
     }
+
 }

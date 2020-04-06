@@ -2,9 +2,13 @@ package ch.zhaw.swm.wall.ioc;
 
 import ch.zhaw.swm.wall.repository.PersonRepository;
 import ch.zhaw.swm.wall.repository.PostRepository;
+import ch.zhaw.swm.wall.repository.RelationshipRepository;
 import ch.zhaw.swm.wall.repository.TopicRepository;
 import ch.zhaw.swm.wall.services.person.PersonService;
+import ch.zhaw.swm.wall.services.person.RelationshipService;
 import ch.zhaw.swm.wall.services.person.impl.PersonServiceImpl;
+import ch.zhaw.swm.wall.services.person.impl.RelationshipServiceImpl;
+import ch.zhaw.swm.wall.services.person.impl.RelationshipStateChangeStrategyProvider;
 import ch.zhaw.swm.wall.services.post.PostService;
 import ch.zhaw.swm.wall.services.post.impl.PostServiceImpl;
 import ch.zhaw.swm.wall.services.topic.TopicService;
@@ -21,6 +25,11 @@ public class IoCConfig {
     }
 
     @Bean
+    public RelationshipService relationshipService(RelationshipRepository relationshipRepository, PersonService personService) {
+        return new RelationshipServiceImpl(relationshipRepository, personService, relationshipStateChangeStrategyProvider(relationshipRepository));
+    }
+
+    @Bean
     public TopicService topicService(TopicRepository topicRepository, PersonService personService) {
         return new TopicServiceImpl(topicRepository, personService);
     }
@@ -29,4 +38,10 @@ public class IoCConfig {
     public PostService postService(PostRepository postRepository) {
         return new PostServiceImpl(postRepository);
     }
+
+    @Bean
+    public RelationshipStateChangeStrategyProvider relationshipStateChangeStrategyProvider(RelationshipRepository relationshipRepository) {
+        return new RelationshipStateChangeStrategyProvider(relationshipRepository);
+    }
+
 }

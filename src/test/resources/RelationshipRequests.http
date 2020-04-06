@@ -1,0 +1,48 @@
+POST http://localhost:8080/relationships
+Content-Type: application/json
+
+{
+  "requestingPersonId": "10",
+  "requestedPersonId": "20"
+}
+
+###
+POST http://localhost:8080/relationships
+Content-Type: application/json
+
+{
+  "requestingPersonId": "20",
+  "requestedPersonId": "30"
+}
+
+###
+POST http://localhost:8080/relationships
+Content-Type: application/json
+
+{
+  "requestingPersonId": "10",
+  "requestedPersonId": "30"
+}
+
+###
+POST http://localhost:8080/relationships
+Content-Type: application/json
+
+{
+  "requestingPersonId": "10",
+  "requestedPersonId": "40"
+}
+
+###
+PATCH http://localhost:8080/relationships/5e8b346d3327c258564c81b9
+Content-Type: application/json
+
+{
+    "status": "ACCEPTED"
+}
+
+###
+DELETE http://localhost:8080/relationships/5e8b12f43327c258564c81b5
+Accept: application/json
+
+####

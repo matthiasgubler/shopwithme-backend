@@ -9,18 +9,52 @@ POST http://localhost:8080/persons
 Content-Type: application/json
 
 {
-  "firstName": "hans",
-  "address": {
-      "city": "Winterthur",
-      "street": "Römerstrasse 15",
-      "zip": "8400",
-      "telephone": "0800800800"
-  },
-  "friends": [ "19", "15", "17" ]
+    "id": "10",
+    "username": "maja",
+    "email": "maja@muster.ch"
 }
 
 ###
+POST http://localhost:8080/persons
+Content-Type: application/json
 
+{
+    "id": "20",
+    "username": "hans",
+    "email": "hans@meier"
+}
+
+###
+POST http://localhost:8080/persons
+Content-Type: application/json
+
+{
+    "id": "30",
+    "username": "max",
+    "email": "max@keller.ch"
+}
+
+###
+POST http://localhost:8080/persons
+Content-Type: application/json
+
+{
+    "id": "40",
+    "username": "verena",
+    "email": "verena@buchmann.ch"
+}
+
+###
+POST http://localhost:8080/persons
+Content-Type: application/json
+
+{
+    "id": "50",
+    "username": "nick",
+    "email": "nick@werner.ch"
+}
+
+###
 GET http://localhost:8080/persons
 Accept: application/json
 
