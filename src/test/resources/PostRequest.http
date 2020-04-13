@@ -1,0 +1,42 @@
+#
+# Comment
+#
+
+POST http://localhost:8080/post/comment
+Content-Type: application/json
+
+{
+  "topicId": "1111",
+  "personId": "9",
+  "comment": "Curabitur blandit tempus porttitor."
+}
+
+###
+
+POST http://localhost:8080/post/comment
+Content-Type: application/json
+
+{
+  "postId": "1212",
+  "topicId": "1111",
+  "personId": "9",
+  "comment": "Curabitur blandit tempus porttitor."
+}
+
+###
+GET http://localhost:8080/post/comment/12
+Accept: application/json
+
+###
+
+
+#
+# Location
+#
+
+#
+# Image
+#
+
+
+

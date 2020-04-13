@@ -2,16 +2,22 @@ package ch.zhaw.swm.wall.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+
 public class AbstractDocument {
 
     @Id
     private String id;
+    private LocalDateTime createDateTime;
+
 
     public AbstractDocument() {
+        createDateTime = LocalDateTime.now();
     }
 
     public AbstractDocument(String id) {
         this.id = id;
+        createDateTime = LocalDateTime.now();
     }
 
     public void setId(String id) {
@@ -25,6 +31,14 @@ public class AbstractDocument {
      */
     public String getId() {
         return id;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public void setCreateDateTime(LocalDateTime createDateTime) {
+        this.createDateTime = createDateTime;
     }
 
     /*
@@ -62,4 +76,5 @@ public class AbstractDocument {
             + "id=" + id
             + "}";
     }
+
 }

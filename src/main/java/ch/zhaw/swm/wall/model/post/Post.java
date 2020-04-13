@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import java.text.MessageFormat;
 
 public class Post extends AbstractDocument {
+
+    public static final String ENTITY_NAME = "post";
+
     @Indexed
     private String topicId;
 
@@ -16,12 +19,16 @@ public class Post extends AbstractDocument {
     private String personId;
 
     private String title;
-
+    private Status status = Status.ACTIVE;
     private final PostType postType;
 
-    private Status status = Status.ACTIVE;
-
     protected Post(PostType postType) {
+        super();
+        this.postType = postType;
+    }
+
+    protected Post(String postId, PostType postType) {
+        super(postId);
         this.postType = postType;
     }
 

@@ -4,9 +4,7 @@ import ch.zhaw.swm.wall.model.post.Comment;
 import ch.zhaw.swm.wall.model.post.PostStructure;
 import ch.zhaw.swm.wall.services.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,11 @@ public class PostController {
     @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
+    }
+
+    @PostMapping("/posts/comments/")
+    public Comment newComment(@RequestBody Comment newComment) {
+        return postService.createCommentPost(newComment);
     }
 
     @GetMapping("/posts/comments/{id}")

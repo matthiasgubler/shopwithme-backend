@@ -35,8 +35,8 @@ public class IoCConfig {
     }
 
     @Bean
-    public PostService postService(PostRepository postRepository) {
-        return new PostServiceImpl(postRepository);
+    public PostService postService(PostRepository postRepository, TopicService topicService, PersonService personService, RelationshipService relationshipService) {
+        return new PostServiceImpl(postRepository, topicService, personService, relationshipService);
     }
 
     @Bean
