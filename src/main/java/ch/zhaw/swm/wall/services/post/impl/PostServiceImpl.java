@@ -56,13 +56,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Comment createCommentPost(Comment comment) {
-        String personId = comment.getPersonId();
         String topicId = comment.getTopicId();
+        String commentOwnerId = comment.getPersonId();
 
-        if (isNull(personId) || personId.isEmpty()) {
+        if (isNull(topicId) || topicId.isEmpty()) {
             throw new IllegalArgumentException("Person or Topic not available.");
         }
-        if (isNull(topicId) || topicId.isEmpty()) {
+        if (isNull(commentOwnerId) || commentOwnerId.isEmpty()) {
             throw new IllegalArgumentException("Person or Topic not available.");
         }
 
@@ -70,24 +70,21 @@ public class PostServiceImpl implements PostService {
         if (!optionalTopic.isPresent()) {
             throw new NotFoundException(Topic.ENTITY_NAME, topicId);
         }
-        Optional<Person> optionalPerson = personService.findById(personId);
-        if (!optionalPerson.isPresent()) {
-            throw new NotFoundException(Person.ENTITY_NAME, personId);
-        }
-        Optional<Person> optionalTopicOwner = personService.findById(optionalTopic.get().getPersonId());
-        if (!optionalTopicOwner.isPresent()) {
-            throw new NotFoundException(Person.ENTITY_NAME, comment.getPersonId());
+        Optional<Person> optionalCommentOwner = personService.findById(commentOwnerId);
+        if (!optionalCommentOwner.isPresent()) {
+            throw new NotFoundException(Person.ENTITY_NAME, commentOwnerId);
         }
 
         //TODO: Check if person is authenticated
 
+        Optional<Person> optionalTopicOwner = personService.findById(optionalTopic.get().getPersonId());
         String topicOwnerId = optionalTopicOwner.get().getId();
-        List<Relationship> relationships = relationshipService.findByRequestingPersonIdAndStatus(personId, ACCEPTED);
+        List<Relationship> relationships = relationshipService.findByRequestingPersonIdAndStatus(commentOwnerId, ACCEPTED);
         List<Relationship> relevantRelationship = relationships.stream()
             .filter(relationship -> relationship.getRequestedPersonId().equals(topicOwnerId))
             .collect(Collectors.toList());
-        if (!personId.equals(topicOwnerId) && relevantRelationship.isEmpty()) {
-            throw new NotAuthorizedException(personId, topicId);
+        if (!commentOwnerId.equals(topicOwnerId) && relevantRelationship.isEmpty()) {
+            throw new NotAuthorizedException(commentOwnerId, topicId);
         }
 
         return postRepository.save(comment);
