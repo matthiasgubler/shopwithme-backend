@@ -19,4 +19,6 @@ public interface PostService {
 
     List<PostStructure> findAllPostsByTopicIdStructured(String topicId);
 
+    Location createLocationPost(Location location);
+    Optional<Location> findLocationById(String postId);
 }

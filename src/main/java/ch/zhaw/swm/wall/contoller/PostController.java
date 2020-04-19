@@ -3,6 +3,7 @@ package ch.zhaw.swm.wall.contoller;
 import ch.zhaw.swm.wall.model.post.Comment;
 import ch.zhaw.swm.wall.model.post.CommentCreation;
 import ch.zhaw.swm.wall.model.post.Post;
+import ch.zhaw.swm.wall.model.post.Location;
 import ch.zhaw.swm.wall.model.post.PostStructure;
 import ch.zhaw.swm.wall.services.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ public class PostController extends BasicController {
     private static final String URI_POSTS = "/posts";
     private static final String URI_COMMENTS = "/comments";
     private static final String URI_TOPIC = "/topics";
+    private static final String URI_LOCATION = "/locations";
     private static final String ID = "/{id}";
 
     @Autowired
@@ -34,6 +36,16 @@ public class PostController extends BasicController {
     @GetMapping(URI_POSTS + ID)
     public <T extends Post> ResponseEntity<T> one(@PathVariable String id) {
         return handleSingleResourceResponse(postService.findById(id));
+    }
+
+    @GetMapping(URI_POSTS + URI_LOCATION + ID)
+    public ResponseEntity<Location> findLocation(String id) {
+        return handleSingleResourceResponse(postService.findLocationById(id));
+    }
+
+    @PostMapping(URI_POSTS + URI_LOCATION)
+    public Location newLocation(@RequestBody Location location) {
+        return postService.createLocationPost(location);
     }
 
     @GetMapping(URI_POSTS + URI_TOPIC + ID)

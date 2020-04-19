@@ -218,6 +218,19 @@ public class PostServiceImplTest {
         assertThat(resultComment).isEqualTo(commentToSave);
     }
 
+    @Test
+    public void createLocationPost_shouldThrowExceptionWhenPersonNotFound() {
+        Location location = new Location();
+        location.setPersonId("99");
+        Double[] locationCoord = new Double[2];
+        locationCoord[0] = 1.0;
+        locationCoord[1] = 2.0;
+        location.setLocation(locationCoord);
+        when(personServiceMock.findById("99")).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> postService.createLocationPost(location))
+            .isInstanceOf(NotFoundException.class);
+    }
+
     private Relationship relationshipAccepted(String requestingPersonId, String requestedPersonId) {
         return new Relationship(requestingPersonId,requestedPersonId, ACCEPTED);
     }

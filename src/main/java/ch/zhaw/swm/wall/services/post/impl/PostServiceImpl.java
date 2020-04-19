@@ -64,6 +64,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Location createLocationPost(final Location location) {
+        return entityIdHandler.handle(Person.ENTITY_NAME, location.getPersonId(),
+            personService::findById, (person) -> postRepository.save(location));
+    }
+
+    @Override
+    public Optional<Location> findLocationById(String postId) {
+        return postRepository.findByIdAndPostType(postId, PostType.LOCATION).map(post -> (Location) post);
+    }
+
+
+    @Override
     public void deletePost(String postId) {
         // TODO: Determine if posts can be deleted
         //  if yes, who can delete what posts => poster and owner of topic?
