@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ch.zhaw.swm.wall.model.person.RelationshipStatus.ACCEPTED;
-import static java.util.Objects.isNull;
 
 public class PostServiceImpl implements PostService {
 

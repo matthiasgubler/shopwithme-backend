@@ -4,13 +4,14 @@ import ch.zhaw.swm.wall.model.AbstractDocument;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 public class Rating extends AbstractDocument {
+
     @Indexed
     private String personId;
 
     @Indexed
     private String postId;
 
-    private Integer rating;
+    private RatingType ratingType;
 
     public String getPersonId() {
         return personId;
@@ -28,11 +29,22 @@ public class Rating extends AbstractDocument {
         this.postId = postId;
     }
 
-    public Integer getRating() {
-        return rating;
+    public RatingType getRatingType() {
+        return ratingType;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setRatingType(RatingType ratingType) {
+        this.ratingType = ratingType;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

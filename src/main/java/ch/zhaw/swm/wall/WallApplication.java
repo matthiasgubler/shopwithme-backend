@@ -12,7 +12,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 public class WallApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WallApplication.class, args);
+        SpringApplication.run(WallApplication.class);
     }
 
     @Bean

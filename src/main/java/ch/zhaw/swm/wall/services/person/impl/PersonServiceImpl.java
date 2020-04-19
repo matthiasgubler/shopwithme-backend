@@ -30,7 +30,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person editPerson(Person person) {
-        return entityIdHandler.handle(Person.ENTITY_NAME, person.getId(), personRepository::findById, storedPerson -> this.editPerson(person, storedPerson));
+        return entityIdHandler.handle(Person.ENTITY_NAME, person.getId(), personRepository::findById, storedPerson -> personRepository.save(person));
     }
 
     @Override
@@ -41,11 +41,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<Person> findAll() {
         return personRepository.findAll();
-    }
-
-    public Person editPerson(Person editedPerson, Person storedPerson) {
-        // Hier könnte man z.B intern geführte Felder usw. restored werden aus storedPerson.
-        return personRepository.save(editedPerson);
     }
 
 }

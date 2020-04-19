@@ -11,7 +11,7 @@ public class Comment extends Post {
         this.message = comment.getMessage();
     }
 
-    public Comment(){
+    public Comment() {
         super(PostType.COMMENT);
     }
 
