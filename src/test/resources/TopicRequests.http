@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "title": "Topic 1",
-    "personId": "123"
+    "personId": "10"
 }
 
 ###
@@ -11,7 +11,7 @@ POST http://localhost:8080/topics
 Content-Type: application/json
 
 {
-    "personId": "123"
+    "personId": "10"
 }
 
 ###

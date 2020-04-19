@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
 
 public class Post extends AbstractDocument {
@@ -18,17 +19,18 @@ public class Post extends AbstractDocument {
     @Indexed
     private String personId;
 
-    private String title;
-    private Status status = Status.ACTIVE;
-    private final PostType postType;
+    @NotNull
+    private PostType postType;
 
-    protected Post(PostType postType) {
-        super();
+    private Status status = Status.ACTIVE;
+
+    public Post(String topicId, String personId, PostType postType) {
+        this.topicId = topicId;
+        this.personId = personId;
         this.postType = postType;
     }
 
-    protected Post(String postId, PostType postType) {
-        super(postId);
+    protected Post(PostType postType) {
         this.postType = postType;
     }
 
@@ -40,10 +42,6 @@ public class Post extends AbstractDocument {
         this.topicId = topicId;
     }
 
-    public PostType getPostType() {
-        return postType;
-    }
-
     public String getPersonId() {
         return personId;
     }
@@ -52,21 +50,12 @@ public class Post extends AbstractDocument {
         this.personId = personId;
     }
 
-    public PostSource getPostSource() {
-        if (personId != null) {
-            return PostSource.PERSON;
-        } else if (topicId != null) {
-            return PostSource.TOPIC;
-        }
-        return PostSource.UNKNOWN;
+    public PostType getPostType() {
+        return postType;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPostType(PostType postType) {
+        this.postType = postType;
     }
 
     public Status getStatus() {
@@ -82,10 +71,8 @@ public class Post extends AbstractDocument {
     public PostStructure createStructure() {
         PostStructure structure = new PostStructure();
         structure.setId(this.getId());
-        structure.setTitle(this.getTitle());
         structure.setType(this.getPostType());
-        structure.setLink(MessageFormat.format("/posts/{0}/{1}",
-            this.getPostType().name().toLowerCase(), this.getId()));
+        structure.setLink(MessageFormat.format("/posts/{0}", this.getId()));
         return structure;
     }
 
@@ -98,4 +85,5 @@ public class Post extends AbstractDocument {
     public int hashCode() {
         return super.hashCode();
     }
+
 }

@@ -9,15 +9,25 @@ import java.util.function.Function;
 public class EntityIdHandler {
 
     public <T> void consume(String entityName, String id, Function<String, Optional<T>> optionalFunction, Consumer<T> entityConsumer) {
-        Optional<T> tOptional = optionalFunction.apply(id);
-        T entity = tOptional.orElseThrow(() -> new NotFoundException(entityName, id));
-        entityConsumer.accept(entity);
+        T nonNullResultT = checkAndReturnExisting(entityName, id, optionalFunction);
+        entityConsumer.accept(nonNullResultT);
     }
 
     public <T, R> R handle(String entityName, String id, Function<String, Optional<T>> optionalFunction, Function<T, R> entityFunction) {
-        Optional<T> tOptional = optionalFunction.apply(id);
-        T nonNullResultT = tOptional.orElseThrow(() -> new NotFoundException(entityName, id));
+        T nonNullResultT = checkAndReturnExisting(entityName, id, optionalFunction);
         return entityFunction.apply(nonNullResultT);
+    }
+
+    public <T> void checkExisting(String entityName, String id, Function<String, Optional<T>> optionalFunction) {
+        Optional<T> tOptional = optionalFunction.apply(id);
+        if (!tOptional.isPresent()) {
+            throw new NotFoundException(entityName, id);
+        }
+    }
+
+    private <T> T checkAndReturnExisting(String entityName, String id, Function<String, Optional<T>> optionalFunction) {
+        Optional<T> tOptional = optionalFunction.apply(id);
+        return tOptional.orElseThrow(() -> new NotFoundException(entityName, id));
     }
 
 }

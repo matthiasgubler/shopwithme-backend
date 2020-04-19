@@ -19,5 +19,4 @@ public interface RelationshipRepository extends MongoRepository<Relationship, St
 
     List<Relationship> findByRequestedPersonIdAndStatus(String requestingPersonId, RelationshipStatus status);
 
-
 }

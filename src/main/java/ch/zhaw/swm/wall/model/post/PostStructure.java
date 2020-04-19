@@ -1,10 +1,10 @@
 package ch.zhaw.swm.wall.model.post;
 
 public class PostStructure {
+
     private String link;
     private String id;
     private PostType type;
-    private String title;
 
     public String getLink() {
         return link;
@@ -30,11 +30,4 @@ public class PostStructure {
         this.type = type;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

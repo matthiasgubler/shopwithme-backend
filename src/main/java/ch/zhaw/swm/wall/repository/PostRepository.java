@@ -8,7 +8,11 @@ import java.util.List;
 
 
 public interface PostRepository extends MongoRepository<Post, String> {
+
     List<Post> findAllByTopicId(String topicId);
+
+    List<Post> findAllByTopicIdOrderByCreateDateTimeAsc(String topicId);
+
     <T extends Post> List<T> findAllByPostTypeIn(PostType postType, List<Post> posts);
-    void deleteById(String id);
+
 }

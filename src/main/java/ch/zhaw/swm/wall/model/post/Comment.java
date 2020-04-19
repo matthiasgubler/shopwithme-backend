@@ -4,21 +4,33 @@ public class Comment extends Post {
 
     public static final String ENTITY_NAME = "comment";
 
-    private String comment;
+    private String message;
 
-    public Comment() {
+    public Comment(CommentCreation comment) {
+        super(comment.getTopicId(), comment.getPersonId(), PostType.COMMENT);
+        this.message = comment.getMessage();
+    }
+
+    public Comment(){
         super(PostType.COMMENT);
     }
 
-    public Comment(String postId) {
-        super(postId, PostType.COMMENT);
+    public String getMessage() {
+        return message;
     }
 
-    public String getComment() {
-        return comment;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

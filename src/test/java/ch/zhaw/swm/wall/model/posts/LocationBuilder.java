@@ -6,7 +6,6 @@ public class LocationBuilder {
 
     private String topicId;
     private String personId;
-    private String title;
 
     private LocationBuilder() {
     }
@@ -25,16 +24,10 @@ public class LocationBuilder {
         return this;
     }
 
-    public LocationBuilder withTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public Location build() {
         Location location = new Location();
         location.setTopicId(topicId);
         location.setPersonId(personId);
-        location.setTitle(title);
         return location;
     }
 

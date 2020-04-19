@@ -1,7 +1,6 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
 import ch.zhaw.swm.wall.contoller.exception.EntityConflictException;
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipCreation;
@@ -41,8 +40,9 @@ public class RelationshipServiceImpl implements RelationshipService {
         String requestingPersonId = relationship.getRequestingPersonId();
         String requestedPersonId = relationship.getRequestedPersonId();
 
-        checkPersonExisting(requestingPersonId);
-        checkPersonExisting(requestedPersonId);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestingPersonId, personService::findById);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestedPersonId, personService::findById);
+
         Relationship relationshipToSave = new Relationship(relationship);
 
         Optional<Relationship> optionalRelationship = relationshipRepository.findByRequestingPersonIdAndRequestedPersonId(requestingPersonId, requestedPersonId);
@@ -69,32 +69,26 @@ public class RelationshipServiceImpl implements RelationshipService {
 
     @Override
     public List<Relationship> findByRequestingPersonId(String requestingPersonId) {
-        checkPersonExisting(requestingPersonId);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestingPersonId, personService::findById);
         return relationshipRepository.findByRequestingPersonId(requestingPersonId);
     }
 
     @Override
     public List<Relationship> findByRequestedPersonId(String requestedPersonId) {
-        checkPersonExisting(requestedPersonId);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestedPersonId, personService::findById);
         return relationshipRepository.findByRequestedPersonId(requestedPersonId);
     }
 
     @Override
     public List<Relationship> findByRequestingPersonIdAndStatus(String requestingPersonId, RelationshipStatus status) {
-        checkPersonExisting(requestingPersonId);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestingPersonId, personService::findById);
         return relationshipRepository.findByRequestingPersonIdAndStatus(requestingPersonId, status);
     }
 
     @Override
     public List<Relationship> findByRequestedPersonIdAndStatus(String requestedPersonId, RelationshipStatus status) {
-        checkPersonExisting(requestedPersonId);
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, requestedPersonId, personService::findById);
         return relationshipRepository.findByRequestedPersonIdAndStatus(requestedPersonId, status);
-    }
-
-    private void checkPersonExisting(String personId) {
-        if (!personService.findById(personId).isPresent()) {
-            throw new NotFoundException(Person.ENTITY_NAME, personId);
-        }
     }
 
     @Override

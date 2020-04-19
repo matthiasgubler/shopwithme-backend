@@ -6,7 +6,6 @@ public class ImageBuilder {
 
     private String topicId;
     private String personId;
-    private String title;
 
     private ImageBuilder() {
     }
@@ -25,16 +24,10 @@ public class ImageBuilder {
         return this;
     }
 
-    public ImageBuilder withTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
     public Image build() {
         Image image = new Image();
         image.setTopicId(topicId);
         image.setPersonId(personId);
-        image.setTitle(title);
         return image;
     }
 

@@ -1,13 +1,9 @@
 package ch.zhaw.swm.wall.services.post.impl;
 
 import ch.zhaw.swm.wall.contoller.exception.NotAuthorizedException;
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
-import ch.zhaw.swm.wall.model.post.Comment;
-import ch.zhaw.swm.wall.model.post.Post;
-import ch.zhaw.swm.wall.model.post.PostStructure;
-import ch.zhaw.swm.wall.model.post.PostType;
+import ch.zhaw.swm.wall.model.post.*;
 import ch.zhaw.swm.wall.model.topic.Topic;
 import ch.zhaw.swm.wall.repository.PostRepository;
 import ch.zhaw.swm.wall.services.EntityIdHandler;
@@ -39,72 +35,62 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Post> Optional<T> findById(String postId) {
+        return (Optional<T>) postRepository.findById(postId);
+    }
+
+    @Override
+    public Comment createCommentPost(CommentCreation comment) {
+        String topicId = comment.getTopicId();
+        String commentOwnerId = comment.getPersonId();
+
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, commentOwnerId, personService::findById);
+
+        // TODO: Check if person is authenticated
+
+        Topic topic = entityIdHandler.handle(Topic.ENTITY_NAME, topicId, topicService::findById, t -> t);
+        String topicOwnerId = entityIdHandler.handle(Person.ENTITY_NAME, topic.getPersonId(), personService::findById, p -> p).getId();
+
+        List<Relationship> relationships = relationshipService.findByRequestingPersonIdAndStatus(commentOwnerId, ACCEPTED);
+        List<Relationship> relevantRelationships = relationships.stream()
+            .filter(relationship -> relationship.getRequestedPersonId().equals(topicOwnerId))
+            .collect(Collectors.toList());
+        if (!commentOwnerId.equals(topicOwnerId) && relevantRelationships.isEmpty()) {
+            throw new NotAuthorizedException(commentOwnerId, topicId);
+        }
+
+        Comment commentToSave = new Comment(comment);
+        return postRepository.save(commentToSave);
+    }
+
+    @Override
+    public void deletePost(String postId) {
+        // TODO: Determine if posts can be deleted
+        //  if yes, who can delete what posts => poster and owner of topic?
+        //  if authenticated user matches personId of topic or post
+        //  delete post and dependencies like ratings
+        //  else throw exception
+        entityIdHandler.consume(Post.ENTITY_NAME, postId, postRepository::findById, postRepository::delete);
+    }
+
+    @Override
     public List<Post> findAllPostsByTopicId(String topicId) {
         return postRepository.findAllByTopicId(topicId);
     }
 
     @Override
-    public <T extends Post> List<T> findPostsOfTypeByTopicId(PostType postType, String topicId) {
+    public <T extends Post> List<T> findPostsByTypeAndTopicId(PostType postType, String topicId) {
         return postRepository.findAllByPostTypeIn(postType, findAllPostsByTopicId(topicId));
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T extends Post> Optional<T> findPostByPostId(String postId) {
-        return (Optional<T>) postRepository.findById(postId);
-    }
-
-    @Override
-    public Comment createCommentPost(Comment comment) {
-        String topicId = comment.getTopicId();
-        String commentOwnerId = comment.getPersonId();
-
-        if (isNull(topicId) || topicId.isEmpty()) {
-            throw new IllegalArgumentException("Person or Topic not available.");
-        }
-        if (isNull(commentOwnerId) || commentOwnerId.isEmpty()) {
-            throw new IllegalArgumentException("Person or Topic not available.");
-        }
-
-        Optional<Topic> optionalTopic = topicService.findById(topicId);
-        if (!optionalTopic.isPresent()) {
-            throw new NotFoundException(Topic.ENTITY_NAME, topicId);
-        }
-        Optional<Person> optionalCommentOwner = personService.findById(commentOwnerId);
-        if (!optionalCommentOwner.isPresent()) {
-            throw new NotFoundException(Person.ENTITY_NAME, commentOwnerId);
-        }
-
-        //TODO: Check if person is authenticated
-
-        Optional<Person> optionalTopicOwner = personService.findById(optionalTopic.get().getPersonId());
-        String topicOwnerId = optionalTopicOwner.get().getId();
-        List<Relationship> relationships = relationshipService.findByRequestingPersonIdAndStatus(commentOwnerId, ACCEPTED);
-        List<Relationship> relevantRelationship = relationships.stream()
-            .filter(relationship -> relationship.getRequestedPersonId().equals(topicOwnerId))
+    public List<PostStructure> findAllPostsByTopicIdStructured(String topicId) {
+        return postRepository
+            .findAllByTopicIdOrderByCreateDateTimeAsc(topicId)
+            .stream()
+            .map(Post::createStructure)
             .collect(Collectors.toList());
-        if (!commentOwnerId.equals(topicOwnerId) && relevantRelationship.isEmpty()) {
-            throw new NotAuthorizedException(commentOwnerId, topicId);
-        }
-
-        return postRepository.save(comment);
-    }
-
-    @Override
-    public void deleteByPostId(String postId) {
-        // TODO: Determine if Posts can be deleted
-        //  if yes, who can delete what posts
-        //  => poster and owner of topic?
-        //  if authenticated user matches
-        //  personId of topic or post
-        //  delete else throw
-        entityIdHandler.consume(Post.ENTITY_NAME, postId, postRepository::findById, postRepository::delete);
-    }
-
-    @Override
-    public List<PostStructure> findAllPostsStructured() {
-        return postRepository.findAll().stream().
-            map(Post::createStructure).collect(Collectors.toList());
     }
 
 }

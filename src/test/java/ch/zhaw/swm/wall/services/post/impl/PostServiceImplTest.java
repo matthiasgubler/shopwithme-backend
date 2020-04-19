@@ -6,11 +6,9 @@ import ch.zhaw.swm.wall.model.TopicBuilder;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.PersonBuilder;
 import ch.zhaw.swm.wall.model.person.Relationship;
-import ch.zhaw.swm.wall.model.post.Comment;
-import ch.zhaw.swm.wall.model.post.Image;
-import ch.zhaw.swm.wall.model.post.Location;
-import ch.zhaw.swm.wall.model.post.Post;
+import ch.zhaw.swm.wall.model.post.*;
 import ch.zhaw.swm.wall.model.posts.CommentBuilder;
+import ch.zhaw.swm.wall.model.posts.CommentCreationBuilder;
 import ch.zhaw.swm.wall.model.posts.ImageBuilder;
 import ch.zhaw.swm.wall.model.posts.LocationBuilder;
 import ch.zhaw.swm.wall.model.topic.Topic;
@@ -21,14 +19,17 @@ import ch.zhaw.swm.wall.services.topic.TopicService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static ch.zhaw.swm.wall.model.person.RelationshipStatus.ACCEPTED;
 import static ch.zhaw.swm.wall.model.post.PostType.COMMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -63,27 +64,34 @@ public class PostServiceImplTest {
 
     private static final String EMPTY = "";
 
-
     @Test
     void findPostsOfTypeByTopicId_shouldFindExistingCommentsByTopicId() {
-        Comment comment1 = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).withComment(COMMENT_1).build();
-        Comment comment2 = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).withComment(COMMENT_2).build();
-        Image image = ImageBuilder.anImage().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).build();
-        Location location = LocationBuilder.aLocation().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).build();
+        CommentCreation commentCreation1 = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withComment(COMMENT_1).build();
+        CommentCreation commentCreation2 = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withComment(COMMENT_2).build();
+        Comment comment1 = new Comment(commentCreation1);
+        Comment comment2 = new Comment(commentCreation2);
+
+        Image image = ImageBuilder.anImage().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).build();
+        Location location = LocationBuilder.aLocation().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).build();
+
         when(postRepositoryMock.findAllByTopicId(TOPIC_ID)).thenReturn(Arrays.asList(comment1, comment2, image, location));
         when(postRepositoryMock.findAllByPostTypeIn(COMMENT, postRepositoryMock.findAllByTopicId(TOPIC_ID))).thenReturn(Arrays.asList(comment1, comment2));
 
-        List<Comment> comments = postService.findPostsOfTypeByTopicId(COMMENT, TOPIC_ID);
+        List<Comment> comments = postService.findPostsByTypeAndTopicId(COMMENT, TOPIC_ID);
 
         assertThat(comments).containsExactly(comment1, comment2);
     }
 
     @Test
     void findAllPostsByTopicId_shouldFindExistingPostsByTopicId() {
-        Comment comment1 = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).withComment(COMMENT_1).build();
-        Comment comment2 = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).withComment(COMMENT_2).build();
-        Image image = ImageBuilder.anImage().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).build();
-        Location location = LocationBuilder.aLocation().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).build();
+        CommentCreation commentCreation1 = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withComment(COMMENT_1).build();
+        CommentCreation commentCreation2 = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withComment(COMMENT_2).build();
+        Comment comment1 = new Comment(commentCreation1);
+        Comment comment2 = new Comment(commentCreation2);
+
+        Image image = ImageBuilder.anImage().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).build();
+        Location location = LocationBuilder.aLocation().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).build();
+
         when(postRepositoryMock.findAllByTopicId(TOPIC_ID)).thenReturn(Arrays.asList(comment1, comment2, image, location));
 
         List<Post> comments = postService.findAllPostsByTopicId(TOPIC_ID);
@@ -93,43 +101,44 @@ public class PostServiceImplTest {
 
     @Test
     void createCommentPost_shouldNotCreateCommentWhenPersonIdNotSet() {
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withTitle(TITLE_1).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withComment(COMMENT_1).build();
 
         assertThatThrownBy(() -> postService.createCommentPost(comment))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Person or Topic not available.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("person id not found");
     }
 
     @Test
     void createCommentPost_shouldNotCreateCommentWhenTopicIdNotSet() {
-        Comment comment = CommentBuilder.aComment().withPersonId(PERSON_ID_1).withTitle(TITLE_1).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withPersonId(PERSON_ID_1).withComment(COMMENT_1).build();
 
         assertThatThrownBy(() -> postService.createCommentPost(comment))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Person or Topic not available.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("person id not found");
     }
 
     @Test
     void createCommentPost_shouldNotCreateCommentWhenPersonIdIsEmpty() {
-        Comment comment = CommentBuilder.aComment().withTopicId(EMPTY).withTitle(TITLE_1).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withTopicId(EMPTY).withComment(COMMENT_1).build();
 
         assertThatThrownBy(() -> postService.createCommentPost(comment))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Person or Topic not available.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("person id not found");
     }
 
     @Test
     void createCommentPost_shouldNotCreateCommentWhenTopicIdIsEmpty() {
-        Comment comment = CommentBuilder.aComment().withPersonId(EMPTY).withTitle(TITLE_1).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withPersonId(EMPTY).withComment(COMMENT_1).build();
 
         assertThatThrownBy(() -> postService.createCommentPost(comment))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Person or Topic not available.");
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("person id not found");
     }
 
     @Test
     void createCommentPost_shouldNotCreateCommentWhenTopicNotExisting() {
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withComment(COMMENT_1).build();
+        when(personServiceMock.findById(PERSON_ID_1)).thenReturn(Optional.of(PersonBuilder.aPerson().withId(PERSON_ID_1).build()));
         when(topicServiceMock.findById(TOPIC_ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> postService.createCommentPost(comment))
@@ -140,7 +149,7 @@ public class PostServiceImplTest {
     @Test
     void createCommentPost_shouldNotCreateCommentWhenPersonNotExisting() {
         Topic topic = TopicBuilder.aTopic().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).build();
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withComment(COMMENT_1).build();
         when(topicServiceMock.findById(TOPIC_ID)).thenReturn(Optional.ofNullable(topic));
         when(personServiceMock.findById(PERSON_ID_2)).thenReturn(Optional.empty());
 
@@ -153,13 +162,15 @@ public class PostServiceImplTest {
     void createCommentPost_shouldCreateCommentWhenNoRelationshipButTopicOwnerComments() {
         Person person = PersonBuilder.aPerson().withId(PERSON_ID_1).build();
         Topic topic = TopicBuilder.aTopic().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).build();
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_2).withComment(COMMENT_1).build();
+        CommentCreation commentCreation = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withComment(COMMENT_1).build();
+        Comment comment = new Comment(commentCreation);
+
         when(topicServiceMock.findById(TOPIC_ID)).thenReturn(Optional.ofNullable(topic));
         when(personServiceMock.findById(PERSON_ID_1)).thenReturn(Optional.of(person));
         when(relationshipServiceMock.findByRequestingPersonIdAndStatus(PERSON_ID_1, ACCEPTED)).thenReturn(Collections.emptyList());
-        when(postRepositoryMock.save(comment)).thenReturn(comment);
+        when(postRepositoryMock.save(Mockito.any())).thenReturn(comment);
 
-        Comment resultComment = postService.createCommentPost(comment);
+        Comment resultComment = postService.createCommentPost(commentCreation);
 
         assertThat(resultComment).isEqualTo(comment);
     }
@@ -169,10 +180,11 @@ public class PostServiceImplTest {
         Person topicOwner = PersonBuilder.aPerson().withId(PERSON_ID_1).build();
         Person commentOwner = PersonBuilder.aPerson().withId(PERSON_ID_2).build();
         Topic topic = TopicBuilder.aTopic().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).build();
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).withComment(COMMENT_1).build();
+        CommentCreation comment = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withComment(COMMENT_1).build();
         Relationship relationship = relationshipAccepted(PERSON_ID_2, PERSON_ID_3);
         List<Relationship> relationships = new LinkedList<>();
         relationships.add(relationship);
+
         when(topicServiceMock.findById(TOPIC_ID)).thenReturn(Optional.of(topic));
         when(personServiceMock.findById(PERSON_ID_1)).thenReturn(Optional.of(topicOwner));
         when(personServiceMock.findById(PERSON_ID_2)).thenReturn(Optional.of(commentOwner));
@@ -188,25 +200,53 @@ public class PostServiceImplTest {
         Person topicOwner = PersonBuilder.aPerson().withId(PERSON_ID_1).build();
         Person commentOwner = PersonBuilder.aPerson().withId(PERSON_ID_2).build();
         Topic topic = TopicBuilder.aTopic().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withTitle(TITLE_1).build();
-        Comment comment = CommentBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withTitle(TITLE_2).withComment(COMMENT_1).build();
+        CommentCreation commentCreation = CommentCreationBuilder.aComment().withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withComment(COMMENT_1).build();
+        Comment commentToSave = new Comment(commentCreation);
         Relationship relationship21 = relationshipAccepted(PERSON_ID_2, PERSON_ID_1);
         Relationship relationship23 = relationshipAccepted(PERSON_ID_2, PERSON_ID_3);
         List<Relationship> relationships = new LinkedList<>();
         relationships.add(relationship23);
         relationships.add(relationship21);
+
         when(topicServiceMock.findById(TOPIC_ID)).thenReturn(Optional.of(topic));
         when(personServiceMock.findById(PERSON_ID_1)).thenReturn(Optional.of(topicOwner));
         when(personServiceMock.findById(PERSON_ID_2)).thenReturn(Optional.of(commentOwner));
         when(relationshipServiceMock.findByRequestingPersonIdAndStatus(PERSON_ID_2, ACCEPTED)).thenReturn(relationships);
-        when(postRepositoryMock.save(comment)).thenReturn(comment);
+        when(postRepositoryMock.save(Mockito.any())).thenReturn(commentToSave);
 
-        Comment resultComment = postService.createCommentPost(comment);
+        Comment resultComment = postService.createCommentPost(commentCreation);
 
-        assertThat(resultComment).isEqualTo(comment);
+        assertThat(resultComment).isEqualTo(commentToSave);
     }
 
     private Relationship relationshipAccepted(String requestingPersonId, String requestedPersonId) {
         return new Relationship(requestingPersonId,requestedPersonId, ACCEPTED);
+    }
+
+    @Test
+    void findAllPostsByTopicIdStructured_shouldReturnOrderedPostStructure() {
+        Comment comment1 = CommentBuilder.aComment().withCommentId("10").withCreateDateTime(LocalDateTime.now().minusDays(1)).withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withMessage(COMMENT_1).build();
+        Comment comment2 = CommentBuilder.aComment().withCommentId("20").withCreateDateTime(LocalDateTime.now().plusDays(1)).withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withMessage(COMMENT_2).build();
+        List<PostStructure> expectedPostStructure = Arrays.asList(comment1.createStructure(), comment2.createStructure());
+
+        when(postRepositoryMock.findAllByTopicIdOrderByCreateDateTimeAsc(TOPIC_ID)).thenReturn(Arrays.asList(comment1, comment2));
+
+        List<PostStructure> postStructureResult = postService.findAllPostsByTopicIdStructured(TOPIC_ID);
+
+        PostStructure postStructureResult0 = postStructureResult.get(0);
+        PostStructure postStructureResult1 = postStructureResult.get(1);
+        PostStructure expectedPostStructure0 = expectedPostStructure.get(0);
+        PostStructure expectedPostStructure1 = expectedPostStructure.get(1);
+
+        assertThat(postStructureResult.size()).isEqualTo(2);
+
+        assertThat(postStructureResult0.getId()).isEqualTo(expectedPostStructure0.getId());
+        assertThat(postStructureResult0.getLink()).isEqualTo(expectedPostStructure0.getLink());
+        assertThat(postStructureResult0.getType()).isEqualTo(expectedPostStructure0.getType());
+
+        assertThat(postStructureResult1.getId()).isEqualTo(expectedPostStructure1.getId());
+        assertThat(postStructureResult1.getLink()).isEqualTo(expectedPostStructure1.getLink());
+        assertThat(postStructureResult1.getType()).isEqualTo(expectedPostStructure1.getType());
     }
 
 }
