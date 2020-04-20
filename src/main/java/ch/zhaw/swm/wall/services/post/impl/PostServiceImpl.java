@@ -40,40 +40,39 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Comment createCommentPost(CommentCreation comment) {
-        String topicId = comment.getTopicId();
-        String commentOwnerId = comment.getPersonId();
+    public Comment createCommentPost(CommentCreation commentCreation) {
+        String topicId = commentCreation.getTopicId();
+        String commentOwnerId = commentCreation.getPersonId();
 
+        entityIdHandler.checkExisting(Topic.ENTITY_NAME, topicId, topicService::findById);
         entityIdHandler.checkExisting(Person.ENTITY_NAME, commentOwnerId, personService::findById);
 
         // TODO: Check if person is authenticated
 
         Topic topic = entityIdHandler.handle(Topic.ENTITY_NAME, topicId, topicService::findById, t -> t);
         String topicOwnerId = entityIdHandler.handle(Person.ENTITY_NAME, topic.getPersonId(), personService::findById, p -> p).getId();
-
         List<Relationship> relationships = relationshipService.findByRequestingPersonIdAndStatus(commentOwnerId, ACCEPTED);
-        List<Relationship> relevantRelationships = relationships.stream()
+        List<Relationship> relevantRelationship = relationships.stream()
             .filter(relationship -> relationship.getRequestedPersonId().equals(topicOwnerId))
             .collect(Collectors.toList());
-        if (!commentOwnerId.equals(topicOwnerId) && relevantRelationships.isEmpty()) {
+        if (!commentOwnerId.equals(topicOwnerId) && relevantRelationship.isEmpty()) {
             throw new NotAuthorizedException(commentOwnerId, topicId);
         }
 
-        Comment commentToSave = new Comment(comment);
-        return postRepository.save(commentToSave);
+        Comment comment = new Comment(commentCreation);
+        return postRepository.save(comment);
     }
 
     @Override
     public Location createLocationPost(final Location location) {
         return entityIdHandler.handle(Person.ENTITY_NAME, location.getPersonId(),
-            personService::findById, (person) -> postRepository.save(location));
+            personService::findById, person -> postRepository.save(location));
     }
 
     @Override
     public Optional<Location> findLocationById(String postId) {
         return postRepository.findByIdAndPostType(postId, PostType.LOCATION).map(post -> (Location) post);
     }
-
 
     @Override
     public void deletePost(String postId) {

@@ -2,12 +2,9 @@ package ch.zhaw.swm.wall.model.posts;
 
 import ch.zhaw.swm.wall.model.post.Comment;
 
-import java.time.LocalDateTime;
-
 public class CommentBuilder {
 
-    private String commentId;
-    private LocalDateTime createDateTime;
+    private String postId;
     private String topicId;
     private String personId;
     private String message;
@@ -19,13 +16,8 @@ public class CommentBuilder {
         return new CommentBuilder();
     }
 
-    public CommentBuilder withCommentId(String commentId) {
-        this.commentId = commentId;
-        return this;
-    }
-
-    public CommentBuilder withCreateDateTime(LocalDateTime createDateTime) {
-        this.createDateTime = createDateTime;
+    public CommentBuilder withPostId(String postId) {
+        this.postId = postId;
         return this;
     }
 
@@ -46,8 +38,7 @@ public class CommentBuilder {
 
     public Comment build() {
         Comment comment = new Comment();
-        comment.setId(commentId);
-        comment.setCreateDateTime(createDateTime);
+        comment.setId(postId);
         comment.setTopicId(topicId);
         comment.setPersonId(personId);
         comment.setMessage(message);

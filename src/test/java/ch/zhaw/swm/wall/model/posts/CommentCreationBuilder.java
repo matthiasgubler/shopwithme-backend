@@ -6,12 +6,12 @@ public class CommentCreationBuilder {
 
     private String topicId;
     private String personId;
-    private String content;
+    private String message;
 
     private CommentCreationBuilder() {
     }
 
-    public static CommentCreationBuilder aComment() {
+    public static CommentCreationBuilder aCommentCreation() {
         return new CommentCreationBuilder();
     }
 
@@ -25,17 +25,17 @@ public class CommentCreationBuilder {
         return this;
     }
 
-    public CommentCreationBuilder withComment(String content) {
-        this.content = content;
+    public CommentCreationBuilder withMessage(String message) {
+        this.message = message;
         return this;
     }
 
     public CommentCreation build() {
-        CommentCreation comment = new CommentCreation();
-        comment.setTopicId(topicId);
-        comment.setPersonId(personId);
-        comment.setMessage(content);
-        return comment;
+        CommentCreation commentCreation = new CommentCreation();
+        commentCreation.setTopicId(topicId);
+        commentCreation.setPersonId(personId);
+        commentCreation.setMessage(message);
+        return commentCreation;
     }
 
 }
