@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventL
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication
-@ComponentScan({"ch.zhaw.swm.wall.ioc", "ch.zhaw.swm.wall.contoller", "ch.zhaw.swm.wall.repository"})
+@ComponentScan({"ch.zhaw.swm.wall.ioc", "ch.zhaw.swm.wall.controller", "ch.zhaw.swm.wall.repository"})
 public class WallApplication {
 
     public static void main(String[] args) {

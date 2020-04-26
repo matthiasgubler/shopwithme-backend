@@ -1,4 +1,4 @@
-package ch.zhaw.swm.wall.contoller.exception;
+package ch.zhaw.swm.wall.controller.exception;
 
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;

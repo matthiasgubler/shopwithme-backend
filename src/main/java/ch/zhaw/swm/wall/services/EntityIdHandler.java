@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 
 import java.util.Optional;
 import java.util.function.Consumer;

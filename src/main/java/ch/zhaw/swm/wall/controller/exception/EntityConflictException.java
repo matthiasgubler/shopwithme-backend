@@ -1,4 +1,4 @@
-package ch.zhaw.swm.wall.contoller.exception;
+package ch.zhaw.swm.wall.controller.exception;
 
 import java.text.MessageFormat;
 

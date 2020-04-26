@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services.post.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.NotAuthorizedException;
+import ch.zhaw.swm.wall.controller.exception.NotAuthorizedException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.post.*;

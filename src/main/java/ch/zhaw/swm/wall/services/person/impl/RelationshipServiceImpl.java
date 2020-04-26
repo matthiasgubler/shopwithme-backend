@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.EntityConflictException;
+import ch.zhaw.swm.wall.controller.exception.EntityConflictException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipCreation;

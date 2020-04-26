@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.InvalidTransformationException;
+import ch.zhaw.swm.wall.controller.exception.InvalidTransformationException;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;
 import ch.zhaw.swm.wall.services.person.RelationshipStateChangeStrategy;

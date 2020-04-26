@@ -1,7 +1,7 @@
 package ch.zhaw.swm.wall.services.post.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.NotAuthorizedException;
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.NotAuthorizedException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.TopicBuilder;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.PersonBuilder;

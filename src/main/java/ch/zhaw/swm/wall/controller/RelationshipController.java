@@ -1,4 +1,4 @@
-package ch.zhaw.swm.wall.contoller;
+package ch.zhaw.swm.wall.controller;
 
 import ch.zhaw.swm.wall.model.person.AcceptFriendshipStatus;
 import ch.zhaw.swm.wall.model.person.Relationship;

@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

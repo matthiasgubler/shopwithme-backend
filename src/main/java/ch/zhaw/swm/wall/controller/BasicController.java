@@ -1,4 +1,4 @@
-package ch.zhaw.swm.wall.contoller;
+package ch.zhaw.swm.wall.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

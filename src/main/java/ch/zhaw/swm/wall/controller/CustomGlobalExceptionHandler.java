@@ -1,6 +1,6 @@
-package ch.zhaw.swm.wall.contoller;
+package ch.zhaw.swm.wall.controller;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

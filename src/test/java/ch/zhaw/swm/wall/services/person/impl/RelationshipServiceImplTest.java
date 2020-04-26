@@ -1,15 +1,14 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.EntityConflictException;
-import ch.zhaw.swm.wall.contoller.exception.InvalidTransformationException;
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.EntityConflictException;
+import ch.zhaw.swm.wall.controller.exception.InvalidTransformationException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.PersonBuilder;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipCreation;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;
 import ch.zhaw.swm.wall.repository.RelationshipRepository;
 import ch.zhaw.swm.wall.services.person.PersonService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

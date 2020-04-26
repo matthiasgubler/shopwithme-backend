@@ -1,4 +1,4 @@
-package ch.zhaw.swm.wall.contoller;
+package ch.zhaw.swm.wall.controller;
 
 import ch.zhaw.swm.wall.model.topic.Topic;
 import ch.zhaw.swm.wall.model.topic.TopicPatch;

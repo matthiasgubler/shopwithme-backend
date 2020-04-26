@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.services.person.impl;
 
-import ch.zhaw.swm.wall.contoller.exception.NotFoundException;
+import ch.zhaw.swm.wall.controller.exception.NotFoundException;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.PersonBuilder;
 import ch.zhaw.swm.wall.repository.PersonRepository;
