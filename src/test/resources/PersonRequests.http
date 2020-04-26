@@ -59,3 +59,7 @@ GET http://localhost:8080/persons
 Accept: application/json
 
 ###
+GET http://localhost:8080/persons/20/topics
+Accept: application/json
+
+###

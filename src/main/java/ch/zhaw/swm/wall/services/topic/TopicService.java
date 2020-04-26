@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TopicService {
+
     Optional<Topic> findById(String id);
 
     Topic create(Topic topic);
@@ -15,5 +16,8 @@ public interface TopicService {
 
     List<Topic> findAll();
 
+    List<Topic> findByPersonId(String personId);
+
     Topic patch(TopicPatch topicPatch, String id);
+
 }

@@ -3,8 +3,10 @@ package ch.zhaw.swm.wall.controller;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;
+import ch.zhaw.swm.wall.model.topic.Topic;
 import ch.zhaw.swm.wall.services.person.PersonService;
 import ch.zhaw.swm.wall.services.person.RelationshipService;
+import ch.zhaw.swm.wall.services.topic.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +18,16 @@ public class PersonsController extends BasicController {
 
     private final PersonService personService;
     private final RelationshipService relationshipService;
+    private final TopicService topicService;
 
     private static final String URI_FRAGMENT = "/persons";
     private static final String ID = "/{id}";
 
     @Autowired
-    public PersonsController(PersonService personService, RelationshipService relationshipService) {
+    public PersonsController(PersonService personService, RelationshipService relationshipService, TopicService topicService) {
         this.personService = personService;
         this.relationshipService = relationshipService;
+        this.topicService = topicService;
     }
 
     @GetMapping(URI_FRAGMENT)
@@ -67,6 +71,11 @@ public class PersonsController extends BasicController {
         } else {
             return relationshipService.findByRequestedPersonId(id);
         }
+    }
+
+    @GetMapping(URI_FRAGMENT + ID + "/topics")
+    public List<Topic> findTopicsByPersonId(@PathVariable String id) {
+        return topicService.findByPersonId(id);
     }
 
 }

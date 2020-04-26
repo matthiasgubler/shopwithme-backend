@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TopicServiceImpl implements TopicService {
+
     private final TopicRepository topicRepository;
 
     private final PersonService personService;
@@ -46,6 +47,12 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> findAll() {
         return topicRepository.findAll();
+    }
+
+    @Override
+    public List<Topic> findByPersonId(String personId) {
+        entityIdHandler.checkExisting(Person.ENTITY_NAME, personId, personService::findById);
+        return topicRepository.findByPersonId(personId);
     }
 
     @Override
