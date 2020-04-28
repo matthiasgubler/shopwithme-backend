@@ -2,8 +2,8 @@ POST http://localhost:8080/topics
 Content-Type: application/json
 
 {
-    "title": "Topic 1",
-    "personId": "10"
+    "title": "Topic 9",
+    "personId": "30"
 }
 
 ###
@@ -34,6 +34,10 @@ Accept: application/json
 ###
 
 DELETE http://localhost:8080/topics/5e81b8070fcbbf47972ac63d
+Accept: application/json
+
+###
+GET http://localhost:8080/topics/5ea6e6226f3dc315cf22eae1/posts
 Accept: application/json
 
 ###

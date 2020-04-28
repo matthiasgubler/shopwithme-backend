@@ -2,7 +2,7 @@ POST http://localhost:8080/posts/comments
 Content-Type: application/json
 
 {
-"topicId": "5e9bfaad6810106337931fbd",
+"topicId": "5ea6e6226f3dc315cf22eae1",
 "personId": "10",
 "message": "comment of person 10"
 }
@@ -13,17 +13,9 @@ POST http://localhost:8080/posts/comments
 Content-Type: application/json
 
 {
-"topicId": "5e9abba792c5255a0cbf0b05",
-"personId": "20",
+"topicId": "5ea6e6226f3dc315cf22eae1",
+"personId": "30",
 "message": "another comment. this time of person 20"
 }
-
-###
-GET http://localhost:8080/posts/5e9bfac06810106337931fbe
-Accept: application/json
-
-###
-GET http://localhost:8080/posts/topics/5e9bfaad6810106337931fbd
-Accept: application/json
 
 ###
