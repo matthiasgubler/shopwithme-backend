@@ -12,6 +12,8 @@ public class Topic extends AbstractDocument {
     @NotNull
     private String title;
 
+    private String description;
+
     @NotNull
     @Indexed
     private String personId;
@@ -40,6 +42,14 @@ public class Topic extends AbstractDocument {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

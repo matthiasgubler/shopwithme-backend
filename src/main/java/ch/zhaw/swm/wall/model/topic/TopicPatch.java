@@ -8,6 +8,8 @@ public class TopicPatch {
 
     private String title;
 
+    private String description;
+
     private Status status = Status.ACTIVE;
 
     public String getTitle() {
@@ -26,9 +28,21 @@ public class TopicPatch {
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Topic apply(Topic topicToApply) {
         if (!StringUtils.isEmpty(this.getTitle())) {
             topicToApply.setTitle(this.getTitle());
+        }
+
+        if (!StringUtils.isEmpty(this.getDescription())) {
+            topicToApply.setDescription(this.getDescription());
         }
 
         if (this.getStatus() != null) {

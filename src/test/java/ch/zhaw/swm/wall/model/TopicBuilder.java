@@ -7,6 +7,7 @@ public class TopicBuilder {
     private String topicId;
     private String title;
     private String personId;
+    private String description;
 
     private TopicBuilder() {
     }
@@ -30,11 +31,17 @@ public class TopicBuilder {
         return this;
     }
 
+    public TopicBuilder withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public Topic build() {
         Topic topic = new Topic();
         topic.setId(topicId);
         topic.setPersonId(personId);
         topic.setTitle(title);
+        topic.setDescription(description);
         return topic;
     }
 
