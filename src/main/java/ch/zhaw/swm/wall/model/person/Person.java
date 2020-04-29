@@ -12,6 +12,9 @@ public class Person extends AbstractDocument {
     private String email;
     private Status status = Status.ACTIVE;
 
+    public Person() {
+    }
+
     public Person(String username, String email) {
         this.username = username;
         this.email = email;

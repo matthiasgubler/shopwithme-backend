@@ -17,4 +17,5 @@ public interface PersonService {
 
     List<Person> findAll();
 
+    Optional<Person> findByEmail(String username);
 }

@@ -8,9 +8,12 @@ import ch.zhaw.swm.wall.services.person.PersonService;
 import ch.zhaw.swm.wall.services.person.RelationshipService;
 import ch.zhaw.swm.wall.services.topic.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -31,8 +34,12 @@ public class PersonsController extends BasicController {
     }
 
     @GetMapping(URI_FRAGMENT)
-    public List<Person> all() {
-        return personService.findAll();
+    public ResponseEntity<List<Person>> all(@RequestParam(required = false) String email) {
+        if (StringUtils.isEmpty(email)) {
+            return new ResponseEntity<>(personService.findAll(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(personService.findByEmail(email).map(Collections::singletonList).orElseGet(Collections::emptyList), HttpStatus.OK);
+        }
     }
 
     @PostMapping(URI_FRAGMENT)
