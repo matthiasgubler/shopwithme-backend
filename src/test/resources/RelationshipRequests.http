@@ -2,8 +2,8 @@ POST http://localhost:8080/relationships
 Content-Type: application/json
 
 {
-  "requestingPersonId": "10",
-  "requestedPersonId": "20"
+    "requestingPersonId": "5eaf1991d26a08a2b5d9ff1d",
+    "requestedPersonId": "5e9c6d85d5375d17ce33bd32"
 }
 
 ###
@@ -11,8 +11,8 @@ POST http://localhost:8080/relationships
 Content-Type: application/json
 
 {
-  "requestingPersonId": "20",
-  "requestedPersonId": "30"
+    "requestingPersonId": "5eaf1991d26a08a2b5d9ff1d",
+    "requestedPersonId": "5eaf1991d26a08a2b5d9ff1d"
 }
 
 ###
@@ -20,21 +20,12 @@ POST http://localhost:8080/relationships
 Content-Type: application/json
 
 {
-  "requestingPersonId": "10",
-  "requestedPersonId": "30"
+    "requestingPersonId": "5e9c6d85d5375d17ce33bd32",
+    "requestedPersonId": "5eaf154c32107b713fe0e2d7"
 }
 
 ###
-POST http://localhost:8080/relationships
-Content-Type: application/json
-
-{
-  "requestingPersonId": "10",
-  "requestedPersonId": "40"
-}
-
-###
-PATCH http://localhost:8080/relationships/5e8b346d3327c258564c81b9
+PATCH http://localhost:8080/relationships/5eaf19b7a8cc18d0534777eb
 Content-Type: application/json
 
 {
@@ -42,7 +33,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/relationships/5e8b12f43327c258564c81b5
+DELETE http://localhost:8080/relationships/5eaf19b7a8cc18d0534777eb
 Accept: application/json
 
 ####

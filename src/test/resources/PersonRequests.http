@@ -54,15 +54,15 @@ GET http://localhost:8080/persons
 Accept: application/json
 
 ###
-GET http://localhost:8080/persons?email=maja@muster.ch
+GET http://localhost:8080/persons?email=johnny.degeil@me.com
 Accept: application/json
 
 ###
-GET http://localhost:8080/persons/20/topics
+GET http://localhost:8080/persons/5e9c6d85d5375d17ce33bd32/topics
 Accept: application/json
 
 ###
-DELETE http://localhost:8080/persons/69
+DELETE http://localhost:8080/persons/5e9c6d85d5375d17ce33bd32
 Accept: application/json
 
 ###

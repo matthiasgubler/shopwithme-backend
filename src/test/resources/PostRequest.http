@@ -2,9 +2,9 @@ POST http://localhost:8080/posts/comments
 Content-Type: application/json
 
 {
-"topicId": "5ea6e6226f3dc315cf22eae1",
-"personId": "10",
-"message": "comment of person 10"
+    "topicId": "5ea6e6226f3dc315cf22eae1",
+    "personId": "5eaf154c32107b713fe0e2d7",
+    "message": "comment of person 5eaf154c32107b713fe0e2d7"
 }
 
 ###
@@ -13,9 +13,34 @@ POST http://localhost:8080/posts/comments
 Content-Type: application/json
 
 {
-"topicId": "5ea6e6226f3dc315cf22eae1",
-"personId": "30",
-"message": "another comment. this time of person 20"
+    "topicId": "5ea6e6226f3dc315cf22eae1",
+    "personId": "5e9c6d85d5375d17ce33bd32",
+    "message": "another comment. this time of person 5e9c6d85d5375d17ce33bd32"
+}
+
+###
+
+POST http://localhost:8080/posts/locations
+Content-Type: application/json
+
+{
+    "topicId": "5ea6e6226f3dc315cf22eae1",
+    "personId": "5e9c6d85d5375d17ce33bd32",
+    "location": [
+        47.497258,
+        8.7285392
+    ]
+}
+
+###
+
+POST http://localhost:8080/posts/images
+Content-Type: application/json
+
+{
+    "topicId": "5ea6e6226f3dc315cf22eae1",
+    "personId": "5e9c6d85d5375d17ce33bd32",
+    "image": "NOT YET IMPLEMENTED!!"
 }
 
 ###

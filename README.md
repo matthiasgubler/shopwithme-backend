@@ -30,3 +30,10 @@ Just run `docker-compose up -d --build` in the project directory.
 To stop it again: `docker-compose down`
 
 And if you want to remove all local data: `docker-compose down -v`
+
+
+### Populate MongoDB with Data
+Attention: Populating the Database will delete everything in beforehand.
+To populate the MongoDB the mongo shell should be installed. The installation-instructions can be found here: https://docs.mongodb.com/manual/mongo/
+For population connect to the desired database and then run `mongo < mongodb/init_data.js`
+
