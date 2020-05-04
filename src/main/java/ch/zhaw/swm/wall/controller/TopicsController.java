@@ -1,6 +1,6 @@
 package ch.zhaw.swm.wall.controller;
 
-import ch.zhaw.swm.wall.model.post.PostStructure;
+import ch.zhaw.swm.wall.model.post.Post;
 import ch.zhaw.swm.wall.model.topic.Topic;
 import ch.zhaw.swm.wall.model.topic.TopicPatch;
 import ch.zhaw.swm.wall.services.post.PostService;
@@ -55,8 +55,8 @@ public class TopicsController extends BasicController {
 
     @GetMapping(URI_TOPICS + ID + URI_POSTS)
     @Operation(description = "Get posts by topic id ordered by create datetime.")
-    public List<PostStructure> getPostsByTopicIdStructured(@PathVariable String id) {
-        return postService.findAllPostsByTopicIdStructured(id);
+    public List<Post> getPostsByTopicIdOrdered(@PathVariable String id) {
+        return postService.findAllPostsByTopicIdOrdered(id);
     }
 
 }

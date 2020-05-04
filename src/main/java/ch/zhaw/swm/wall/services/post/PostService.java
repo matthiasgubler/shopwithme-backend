@@ -17,8 +17,10 @@ public interface PostService {
 
     <T extends Post> List<T> findPostsByTypeAndTopicId(PostType postType, String topicId);
 
-    List<PostStructure> findAllPostsByTopicIdStructured(String topicId);
+    List<Post> findAllPostsByTopicIdOrdered(String topicId);
 
     Location createLocationPost(Location location);
+
     Optional<Location> findLocationById(String postId);
+
 }

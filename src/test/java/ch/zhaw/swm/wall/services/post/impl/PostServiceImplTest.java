@@ -226,23 +226,23 @@ class PostServiceImplTest {
     }
 
     @Test
-    void shouldReturnOrderedPostStructure() {
+    void shouldReturnOrderedPosts() {
         Comment comment1 = CommentBuilder.aComment().withPostId("10").withTopicId(TOPIC_ID).withPersonId(PERSON_ID_1).withMessage(COMMENT_1).build();
         Comment comment2 = CommentBuilder.aComment().withPostId("20").withTopicId(TOPIC_ID).withPersonId(PERSON_ID_2).withMessage(COMMENT_2).build();
         comment1.setCreateDateTime(LocalDateTime.now().minusDays(1));
         comment2.setCreateDateTime(LocalDateTime.now());
-        List<PostStructure> expectedPostStructure = Arrays.asList(comment1.createStructure(), comment2.createStructure());
-        PostStructure expectedPostStructure0 = expectedPostStructure.get(0);
-        PostStructure expectedPostStructure1 = expectedPostStructure.get(1);
+        List<Post> expectedPostsOrdered = Arrays.asList(comment1, comment2);
+        Post expectedPost0 = expectedPostsOrdered.get(0);
+        Post expectedPost1 = expectedPostsOrdered.get(1);
         when(postRepositoryMock.findAllByTopicIdOrderByCreateDateTimeAsc(TOPIC_ID)).thenReturn(Arrays.asList(comment1, comment2));
 
-        List<PostStructure> resultPostStructure = postService.findAllPostsByTopicIdStructured(TOPIC_ID);
+        List<Post> resultPost = postService.findAllPostsByTopicIdOrdered(TOPIC_ID);
 
-        PostStructure resultPostStructure0 = resultPostStructure.get(0);
-        PostStructure resultPostStructure1 = resultPostStructure.get(1);
-        assertThat(resultPostStructure).hasSameSizeAs(expectedPostStructure);
-        assertThat(resultPostStructure0).isEqualToComparingFieldByField(expectedPostStructure0);
-        assertThat(resultPostStructure1).isEqualToComparingFieldByField(expectedPostStructure1);
+        Post resultPost0 = resultPost.get(0);
+        Post resultPost1 = resultPost.get(1);
+        assertThat(resultPost).hasSameSizeAs(expectedPostsOrdered);
+        assertThat(resultPost0).isEqualToComparingFieldByField(expectedPost0);
+        assertThat(resultPost1).isEqualToComparingFieldByField(expectedPost1);
     }
 
     private Relationship relationshipAccepted(String requestingPersonId, String requestedPersonId) {

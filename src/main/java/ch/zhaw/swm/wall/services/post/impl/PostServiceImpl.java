@@ -95,12 +95,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostStructure> findAllPostsByTopicIdStructured(String topicId) {
-        return postRepository
-            .findAllByTopicIdOrderByCreateDateTimeAsc(topicId)
-            .stream()
-            .map(Post::createStructure)
-            .collect(Collectors.toList());
+    public List<Post> findAllPostsByTopicIdOrdered(String topicId) {
+        return postRepository.findAllByTopicIdOrderByCreateDateTimeAsc(topicId);
     }
 
 }

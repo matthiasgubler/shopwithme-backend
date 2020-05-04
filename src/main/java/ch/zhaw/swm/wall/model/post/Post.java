@@ -2,12 +2,9 @@ package ch.zhaw.swm.wall.model.post;
 
 import ch.zhaw.swm.wall.model.AbstractDocument;
 import ch.zhaw.swm.wall.model.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.NotNull;
-import java.text.MessageFormat;
 
 public class Post extends AbstractDocument {
 
@@ -64,16 +61,6 @@ public class Post extends AbstractDocument {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    @JsonIgnore
-    @Transient
-    public PostStructure createStructure() {
-        PostStructure structure = new PostStructure();
-        structure.setId(this.getId());
-        structure.setType(this.getPostType());
-        structure.setLink(MessageFormat.format("/posts/{0}", this.getId()));
-        return structure;
     }
 
     @Override
