@@ -1,5 +1,4 @@
-use
-swm
+use swm;
 db.dropDatabase();
 
 //##### Persons
@@ -140,10 +139,21 @@ db.relationship.insert({
   _class: "ch.zhaw.swm.wall.model.person.Relationship"
 })
 
+//John - lame - PENDING
+db.relationship.insert({
+  _id: ObjectId("5eb0257e5297c97051016a33"),
+  requestingPersonId: max_id,
+  requestedPersonId: lame_id,
+  status: "PENDING",
+  createDateTime: ISODate(),
+  _class: "ch.zhaw.swm.wall.model.person.Relationship"
+})
+
+
 //##### Posts
 
 //##### Posts.Comments
-db.topic.insert({
+db.post.insert({
   _id: ObjectId("5eaf1c17fde64f01b9d09ef3"),
   topicId: franziska_topic1_id,
   personId: max_id,
@@ -152,9 +162,9 @@ db.topic.insert({
   message: "Super tolli Hüet",
   createDateTime: ISODate(),
   status: "ACTIVE",
-  _class: "ch.zhaw.swm.wall.model.topic.Topic"
+  _class: "ch.zhaw.swm.wall.model.post.Comment"
 });
-db.topic.insert({
+db.post.insert({
   _id: ObjectId("5eaf1d3af545418e58cb955f"),
   topicId: john_topic1_id,
   personId: max_id,
@@ -163,11 +173,11 @@ db.topic.insert({
   message: "Ich kommentier mich halt selber, wenni susch kei Kollege han",
   createDateTime: ISODate(),
   status: "ACTIVE",
-  _class: "ch.zhaw.swm.wall.model.topic.Topic"
+  _class: "ch.zhaw.swm.wall.model.post.Comment"
 });
 
 //##### Posts.Locations
-db.topic.insert({
+db.post.insert({
   _id: ObjectId("5eaf1deffde64f01b9d09ef4"),
   topicId: john_topic1_id,
   personId: max_id,
@@ -176,7 +186,7 @@ db.topic.insert({
   location: [47.497258, 8.7285392],
   createDateTime: ISODate(),
   status: "ACTIVE",
-  _class: "ch.zhaw.swm.wall.model.topic.Topic"
+  _class: "ch.zhaw.swm.wall.model.topic.Location"
 });
 
 //##### Posts.Images
