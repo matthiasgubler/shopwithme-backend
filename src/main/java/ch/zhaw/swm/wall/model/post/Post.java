@@ -21,6 +21,9 @@ public class Post extends AbstractDocument {
 
     private Status status = Status.ACTIVE;
 
+    public Post() {
+    }
+
     public Post(String topicId, String personId, PostType postType) {
         this.topicId = topicId;
         this.personId = personId;
