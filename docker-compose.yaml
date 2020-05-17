@@ -4,8 +4,11 @@ services:
     image: mongo:4.2.3
     ports:
       - 27017:27017
+    environment: 
+      - MONGO_INITDB_DATABASE=swm
     volumes:
       - "dbdata:/data/db"
+      - "./mongodb/init_data.js:/docker-entrypoint-initdb.d/init_data.js"
   app:
     build:
       context: .

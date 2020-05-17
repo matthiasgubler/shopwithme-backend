@@ -1,4 +1,4 @@
-use swm;
+db = db.getSiblingDB('swm')
 db.dropDatabase();
 
 //##### Persons
@@ -186,7 +186,7 @@ db.post.insert({
   location: [47.497258, 8.7285392],
   createDateTime: ISODate(),
   status: "ACTIVE",
-  _class: "ch.zhaw.swm.wall.model.topic.Location"
+  _class: "ch.zhaw.swm.wall.model.post.Location"
 });
 
 //##### Posts.Images
