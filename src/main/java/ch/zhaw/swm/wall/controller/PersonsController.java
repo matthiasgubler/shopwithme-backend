@@ -1,5 +1,6 @@
 package ch.zhaw.swm.wall.controller;
 
+import ch.zhaw.swm.wall.context.Context;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class PersonsController extends BasicController {
@@ -25,6 +27,7 @@ public class PersonsController extends BasicController {
 
     private static final String URI_FRAGMENT = "/persons";
     private static final String ID = "/{id}";
+    private static final String SELF = "/self";
 
     @Autowired
     public PersonsController(PersonService personService, RelationshipService relationshipService, TopicService topicService) {
@@ -40,6 +43,24 @@ public class PersonsController extends BasicController {
         } else {
             return new ResponseEntity<>(personService.findByEmail(email).map(Collections::singletonList).orElseGet(Collections::emptyList), HttpStatus.OK);
         }
+    }
+
+    @GetMapping(URI_FRAGMENT + SELF)
+    public ResponseEntity<Person> whoami() {
+        String email = Context.getCurrentContext().getLoggedInUser().getEmail();
+        if (email.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        Optional<Person> optionalPerson = personService.findByEmail(email);
+        if (optionalPerson.isPresent()) {
+            return new ResponseEntity<>(optionalPerson.get(), HttpStatus.OK);
+        }
+
+        Person newPerson = new Person();
+        newPerson.setEmail(email);
+        newPerson.setUsername(email);
+        return new ResponseEntity<>(personService.createPerson(newPerson), HttpStatus.OK);
     }
 
     @PostMapping(URI_FRAGMENT)
