@@ -59,7 +59,7 @@ public class PersonsController extends BasicController {
             return new ResponseEntity<>(optionalPerson.get(), HttpStatus.OK);
         }
 
-        Person newPerson = new Person(loggedInUser.getName(), email, loggedInUser.getPicture());
+        Person newPerson = new Person(loggedInUser.getName(), email, loggedInUser.getImageURL());
         return new ResponseEntity<>(personService.createPerson(newPerson), HttpStatus.OK);
     }
 

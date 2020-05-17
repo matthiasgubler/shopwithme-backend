@@ -10,7 +10,7 @@ public class Person extends AbstractDocument {
 
     private String username;
     private String email;
-    private String picture = "";
+    private String imageURL;
     private Status status = Status.ACTIVE;
 
     public Person() {
@@ -21,10 +21,10 @@ public class Person extends AbstractDocument {
         this.email = email;
     }
 
-    public Person(String username, String email, String picture) {
+    public Person(String username, String email, String imageURL) {
         this.username = username;
         this.email = email;
-        this.picture = picture;
+        this.imageURL = imageURL;
     }
 
     public String getUsername() {
@@ -51,12 +51,12 @@ public class Person extends AbstractDocument {
         this.status = status;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     @Override
