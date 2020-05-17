@@ -2,35 +2,58 @@ package ch.zhaw.swm.wall.interceptor;
 
 import ch.zhaw.swm.wall.context.Context;
 import ch.zhaw.swm.wall.context.LoggedInUser;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.DefaultClaims;
+import ch.zhaw.swm.wall.controller.exception.NotAuthenticatedException;
+import ch.zhaw.swm.wall.model.auth.TokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Optional;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
+
     private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String EMAIL_FIELD = "email";
-    private static final String SUB_FIELD = "sub";
+
+    private final TokenVerifier tokenVerifier;
+
+    public AuthenticationInterceptor(TokenVerifier tokenVerifier) {
+        this.tokenVerifier = tokenVerifier;
+    }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        parseUser(request).ifPresent(loggedInUser -> Context.getCurrentContext().setLoggedInUser(loggedInUser));
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        String idTokenString = getIdTokenString(request);
+
+        parseUser(idTokenString).ifPresent(loggedInUser -> Context.getCurrentContext().setLoggedInUser(loggedInUser));
         return true;
     }
 
-    private Optional<LoggedInUser> parseUser(HttpServletRequest request) {
-        String authContent = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authContent != null && authContent.startsWith(TOKEN_PREFIX)) {
-            authContent = "." + authContent.replace(TOKEN_PREFIX, "").split("\\.")[1] + ".";
-            Jwt jwt = Jwts.parser().parse(authContent);
-            if (jwt != null && jwt.getBody() != null) {
-                DefaultClaims defaultClaims = (DefaultClaims) jwt.getBody();
-                return Optional.of(new LoggedInUser((String) defaultClaims.get(SUB_FIELD), (String) defaultClaims.get(EMAIL_FIELD)));
+    private String getIdTokenString(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        return authorizationHeader.replace(TOKEN_PREFIX, "");
+    }
+
+    private GoogleIdToken authenticate(String authContent) {
+        GoogleIdToken idToken;
+        try {
+            idToken = tokenVerifier.getVerifier().verify(authContent);
+        } catch (GeneralSecurityException | IOException e) {
+            throw new NotAuthenticatedException(e);
+        }
+        return idToken;
+    }
+
+    private Optional<LoggedInUser> parseUser(String idTokenString) {
+        if (!idTokenString.isEmpty()) {
+            GoogleIdToken idToken = authenticate(idTokenString);
+            if (idToken != null) {
+                Payload payload = idToken.getPayload();
+                return Optional.of(new LoggedInUser(payload.getSubject(), payload.getEmail()));
             }
         }
         return Optional.of(LoggedInUser.newDefaultUser());

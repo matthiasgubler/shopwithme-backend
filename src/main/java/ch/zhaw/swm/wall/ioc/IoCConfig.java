@@ -1,5 +1,6 @@
 package ch.zhaw.swm.wall.ioc;
 
+import ch.zhaw.swm.wall.model.auth.TokenVerifier;
 import ch.zhaw.swm.wall.repository.PersonRepository;
 import ch.zhaw.swm.wall.repository.PostRepository;
 import ch.zhaw.swm.wall.repository.RelationshipRepository;
@@ -42,6 +43,11 @@ public class IoCConfig {
     @Bean
     public RelationshipStateChangeStrategyProvider relationshipStateChangeStrategyProvider(RelationshipRepository relationshipRepository) {
         return new RelationshipStateChangeStrategyProvider(relationshipRepository);
+    }
+
+    @Bean
+    public TokenVerifier tokenVerifier() {
+        return new TokenVerifier();
     }
 
 }

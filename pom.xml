@@ -25,10 +25,11 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.google.api-client</groupId>-->
-<!--            <artifactId>google-api-client</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.30.9</version>
+        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -98,7 +99,7 @@
             <dependency>
                 <groupId>com.google.api-client</groupId>
                 <artifactId>google-api-client</artifactId>
-                <version>1.30.4</version>
+                <version>1.30.9</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
