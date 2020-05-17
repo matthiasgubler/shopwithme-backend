@@ -59,7 +59,7 @@ public class PersonsController extends BasicController {
 
         Person newPerson = new Person();
         newPerson.setEmail(email);
-        newPerson.setUsername(email);
+        newPerson.setUsername(Context.getCurrentContext().getLoggedInUser().getName());
         return new ResponseEntity<>(personService.createPerson(newPerson), HttpStatus.OK);
     }
 

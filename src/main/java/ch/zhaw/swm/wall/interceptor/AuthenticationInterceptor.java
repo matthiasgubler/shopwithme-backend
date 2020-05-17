@@ -53,7 +53,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             GoogleIdToken idToken = authenticate(idTokenString);
             if (idToken != null) {
                 Payload payload = idToken.getPayload();
-                return Optional.of(new LoggedInUser(payload.getSubject(), payload.getEmail()));
+                String name = ((String) payload.get("given_name")).concat(" " + ((String) payload.get("family_name")).substring(0, 1));
+                return Optional.of(new LoggedInUser(payload.getSubject(), payload.getEmail(), name));
             }
         }
         return Optional.of(LoggedInUser.newDefaultUser());
