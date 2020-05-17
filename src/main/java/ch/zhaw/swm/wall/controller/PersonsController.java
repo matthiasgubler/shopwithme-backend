@@ -1,6 +1,7 @@
 package ch.zhaw.swm.wall.controller;
 
 import ch.zhaw.swm.wall.context.Context;
+import ch.zhaw.swm.wall.context.LoggedInUser;
 import ch.zhaw.swm.wall.model.person.Person;
 import ch.zhaw.swm.wall.model.person.Relationship;
 import ch.zhaw.swm.wall.model.person.RelationshipStatus;
@@ -47,7 +48,8 @@ public class PersonsController extends BasicController {
 
     @GetMapping(URI_FRAGMENT + SELF)
     public ResponseEntity<Person> whoami() {
-        String email = Context.getCurrentContext().getLoggedInUser().getEmail();
+        LoggedInUser loggedInUser = Context.getCurrentContext().getLoggedInUser();
+        String email = loggedInUser.getEmail();
         if (email.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -57,9 +59,7 @@ public class PersonsController extends BasicController {
             return new ResponseEntity<>(optionalPerson.get(), HttpStatus.OK);
         }
 
-        Person newPerson = new Person();
-        newPerson.setEmail(email);
-        newPerson.setUsername(Context.getCurrentContext().getLoggedInUser().getName());
+        Person newPerson = new Person(loggedInUser.getName(), email, loggedInUser.getPicture());
         return new ResponseEntity<>(personService.createPerson(newPerson), HttpStatus.OK);
     }
 
@@ -105,5 +105,4 @@ public class PersonsController extends BasicController {
     public List<Topic> findTopicsByPersonId(@PathVariable String id) {
         return topicService.findByPersonId(id);
     }
-
 }

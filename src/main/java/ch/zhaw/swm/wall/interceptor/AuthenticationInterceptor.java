@@ -54,7 +54,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (idToken != null) {
                 Payload payload = idToken.getPayload();
                 String name = ((String) payload.get("given_name")).concat(" " + ((String) payload.get("family_name")).substring(0, 1));
-                return Optional.of(new LoggedInUser(payload.getSubject(), payload.getEmail(), name));
+                String picture = (String) payload.get("picture");
+                return Optional.of(new LoggedInUser(payload.getSubject(), payload.getEmail(), name, picture));
             }
         }
         return Optional.of(LoggedInUser.newDefaultUser());
