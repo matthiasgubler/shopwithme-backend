@@ -6,18 +6,29 @@ public class Location extends Post {
 
     public static final String ENTITY_NAME = "location";
 
-    @GeoSpatialIndexed(name = "location")
-    private Double[] location;
+    @GeoSpatialIndexed(name = "coordinates")
+    private Double[] coordinates;
 
     public Location() {
         super(PostType.LOCATION);
     }
 
-    public Double[] getLocation() {
-        return location;
+    public Double[] getCoordinates() {
+        return coordinates;
     }
 
-    public void setLocation(Double[] location) {
-        this.location = location;
+    public void setCoordinates(Double[] coordinates) {
+        this.coordinates = coordinates;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
 }

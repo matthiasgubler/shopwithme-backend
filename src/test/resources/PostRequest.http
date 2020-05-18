@@ -26,7 +26,7 @@ Content-Type: application/json
 {
     "topicId": "5ea6e6226f3dc315cf22eae1",
     "personId": "5e9c6d85d5375d17ce33bd32",
-    "location": [
+    "coordinates": [
         47.497258,
         8.7285392
     ]

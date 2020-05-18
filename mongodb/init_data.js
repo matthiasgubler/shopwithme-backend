@@ -183,7 +183,7 @@ db.post.insert({
   personId: max_id,
   postType: "LOCATION",
   status: "ACTIVE",
-  location: [47.497258, 8.7285392],
+  coordinates: [47.497258, 8.7285392],
   createDateTime: ISODate(),
   status: "ACTIVE",
   _class: "ch.zhaw.swm.wall.model.post.Location"

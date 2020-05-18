@@ -217,7 +217,7 @@ class PostServiceImplTest {
         Double[] locationCoord = new Double[2];
         locationCoord[0] = 1.0;
         locationCoord[1] = 2.0;
-        location.setLocation(locationCoord);
+        location.setCoordinates(locationCoord);
         when(personServiceMock.findById("99")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> postService.createLocationPost(location))
